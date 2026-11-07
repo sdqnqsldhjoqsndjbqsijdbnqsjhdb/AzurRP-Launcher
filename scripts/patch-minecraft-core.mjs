@@ -12,15 +12,16 @@ try {
   throw new Error(`minecraft-java-core introuvable (${launchFile}). Lancez npm install avant le build.`, { cause: error });
 }
 
-const oldCatch = ".catch((err) => ({ error: err?.message || String(err) }));";
 const diagnosticCatch = ".catch((err) => ({ error: err?.message || (typeof err === 'string' ? err : require('node:util').inspect(err, { depth: 8, breakLength: 120 })) }));";
-
 if (source.includes(diagnosticCatch)) {
-  process.exit(0);
+  console.log('[build] Correctif de diagnostic Forge déjà présent.');
+} else {
+  const oldCatch = /\.catch\(\s*\(err\)\s*=>\s*\(\{\s*error:\s*err\?\.message\s*\|\|\s*String\(err\)\s*\}\)\s*\);/;
+  if (!oldCatch.test(source)) {
+    // Diagnostic-only: a dependency formatting/API change must not fail builds.
+    console.warn('[build] Catch Forge non reconnu dans minecraft-java-core; correctif de diagnostic ignoré.');
+  } else {
+    await writeFile(launchFile, source.replace(oldCatch, diagnosticCatch), 'utf8');
+    console.log('[build] Correctif de diagnostic Forge appliqué.');
+  }
 }
-if (!source.includes(oldCatch)) {
-  throw new Error('Version inattendue de minecraft-java-core : impossible d’appliquer le correctif de diagnostic Forge.');
-}
-
-await writeFile(launchFile, source.replace(oldCatch, diagnosticCatch), 'utf8');
-console.log('[build] Correctif de diagnostic Forge appliqué.');
