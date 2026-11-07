@@ -1,7 +1,7 @@
 {
   "name": "azur-rp-launcher",
   "productName": "AzurRP",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Launcher Minecraft 1.12.2 pour le serveur roleplay AzurRP",
   "author": {
     "name": "AzurRP",
@@ -28,9 +28,10 @@
     "verify:dist": "node scripts/verify-dist.mjs"
   },
   "dependencies": {
+    "discord-rpc": "^4.0.1",
+    "electron-updater": "^6.8.1",
     "minecraft-java-core": "^4.2.9",
-    "minecraft-server-util": "^5.4.4",
-    "electron-updater": "^6.8.1"
+    "minecraft-server-util": "^5.4.4"
   },
   "devDependencies": {
     "@electron/asar": "^3.4.1",
@@ -41,7 +42,7 @@
     "sharp": "^0.35.5"
   },
   "engines": {
-    "node": ">=20.11.0"
+    "node": ">=22.x"
   },
   "allowScripts": {
     "electron@39.8.10": true,

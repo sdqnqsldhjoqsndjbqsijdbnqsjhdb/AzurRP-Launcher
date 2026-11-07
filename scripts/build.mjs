@@ -15,6 +15,7 @@ await import('./patch-minecraft-core.mjs');
 // Exemple : AZURRP_API_URL=https://api.azur-rp.eu npm run dist:win
 const buildApiUrl = String(process.env.AZURRP_API_URL || '').trim();
 const buildServerHost = String(process.env.AZURRP_SERVER_HOST || '').trim();
+const buildDiscordClientId = String(process.env.AZURRP_DISCORD_CLIENT_ID || '').trim();
 
 const shared = {
   bundle: true,
@@ -26,7 +27,8 @@ const shared = {
   define: {
     'process.env.NODE_ENV': JSON.stringify(dev ? 'development' : 'production'),
     __AZURRP_BUILD_API_URL__: JSON.stringify(buildApiUrl),
-    __AZURRP_BUILD_SERVER_HOST__: JSON.stringify(buildServerHost)
+    __AZURRP_BUILD_SERVER_HOST__: JSON.stringify(buildServerHost),
+    __AZURRP_DISCORD_CLIENT_ID__: JSON.stringify(buildDiscordClientId)
   }
 };
 
@@ -52,7 +54,7 @@ await build({
   platform: 'node',
   target: 'node20',
   format: 'cjs',
-  external: ['electron', 'electron-updater', 'minecraft-java-core', 'minecraft-server-util']
+  external: ['electron', 'electron-updater', 'minecraft-java-core', 'minecraft-server-util', 'discord-rpc']
 });
 
 await build({

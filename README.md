@@ -138,10 +138,17 @@ dans `server/data/azurrp-local.sqlite`. Ce mode requiert Node.js 22 ou ultérieu
 | `AZURRP_API_URL` | `https://api.azur-rp.eu` | URL de base de l'API |
 | `AZURRP_SERVER_HOST` | `play.azur-rp.eu` | Hôte Minecraft par défaut |
 | `AZURRP_SERVER_PORT` | `25565` | Port Minecraft par défaut |
+| `AZURRP_DISCORD_CLIENT_ID` | *(vide)* | ID de l’application Discord pour Rich Presence |
 
 Ces valeurs peuvent être **injectées à la compilation** (voir
 [Construire les installateurs](#construire-les-installateurs)) ou modifiées
 par le joueur dans le launcher.
+
+La Rich Presence Discord est activée si `AZURRP_DISCORD_CLIENT_ID` est défini
+au lancement ou à la compilation. Crée une application dans le portail
+développeur Discord, configure son image `azurrp`, puis fournis son ID lors du
+build (`AZURRP_DISCORD_CLIENT_ID=... npm run dist:win`). Elle affiche « Joue à
+AzurRP » pendant l’exécution de Minecraft et revient au launcher à sa fermeture.
 
 Les paramètres sont stockés dans le dossier `userData` d'Electron :
 

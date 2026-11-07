@@ -14,6 +14,7 @@ const api = require('./services/api');
 const { detectJava } = require('./services/java');
 const { MinecraftManager } = require('./services/minecraft');
 const { ServerStatusService } = require('./services/serverStatus');
+const { DiscordPresence } = require('./services/discordPresence');
 
 if (!app.requestSingleInstanceLock()) {
   app.quit();
@@ -41,6 +42,7 @@ function boot() {
   app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') app.quit();
   });
+  app.on('before-quit', () => discordPresence?.stop());
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
@@ -53,6 +55,7 @@ let settingsStore = null;
 let sessionStore = null;
 let minecraft = null;
 let serverStatus = null;
+let discordPresence = null;
 let defaultGameDir = '';
 let rendererCrashed = false;
 
@@ -91,6 +94,8 @@ async function initialize() {
   enforceForgeForPlayers();
 
   serverStatus = new ServerStatusService({ settingsStore, logger });
+  discordPresence = new DiscordPresence({ logger });
+  discordPresence.start();
   minecraft = new MinecraftManager({
     settingsStore,
     logger,
@@ -249,6 +254,10 @@ function sendToRenderer(channel, payload) {
 
 function emitGameEvent(event) {
   sendToRenderer('game:event', event);
+  if (event.type === 'spawned') discordPresence?.setGameState(true);
+  if (event.type === 'closed' || event.type === 'failed') {
+    discordPresence?.setGameState(false, 'Dans le launcher');
+  }
   if (event.type === 'spawned') {
     logger.info('Minecraft a démarré.');
     if (settingsStore.get().minimizeOnLaunch && mainWindow && !mainWindow.isDestroyed()) {
