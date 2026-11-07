@@ -12,63 +12,35 @@ const settings = {
   memoryMinMb: 1024,
   resolution: { width: 1280, height: 720, fullscreen: false },
   serverHost: 'play.azur-rp.eu',
-  serverPort: 25565,
+  serverPort: 22459,
   autoConnect: true,
   useForge: true,
-  forgeBuild: '14.23.5.2860',
+  forgeBuild: '1.12.2-14.23.5.2860',
   gameDir: 'C:\\Users\\Nova\\AppData\\Roaming\\AzurRP\\minecraft',
   javaPath: '',
-  apiUrl: 'http://127.0.0.1:3000',
+  apiUrl: 'https://api.azur-rp.eu',
   minimizeOnLaunch: true,
   rememberSession: true
 };
 
 const user = {
   id: 1,
-  username: 'Nova',
-  email: 'nova@azurrp.fr',
+  username: 'Draco',
+  email: 'dracomc-off@proton.me',
   role: 'admin',
   createdAt: '2026-01-18T10:24:00.000Z'
 };
 
-const news = [
-  {
-    id: 'festival-lanternes',
-    title: 'Le Festival des Lumières illumine le centre-ville',
-    excerpt:
-      'Trois soirées de concerts, de food trucks et d’installations lumineuses sur l’avenue centrale. La ville ne dormira pas.',
-    tag: 'Événement',
-    image: 'news-festival.svg',
-    publishedAt: '2026-10-28T18:00:00.000Z'
-  },
-  {
-    id: 'marche-suspendu',
-    title: 'Le marché nocturne s’installe sur l’avenue',
-    excerpt:
-      'Artisans, producteurs et commerçants prennent possession du centre-ville à la tombée de la nuit. Un nouvel espace pour l’économie locale.',
-    tag: 'Économie',
-    image: 'news-market.svg',
-    publishedAt: '2026-10-21T16:30:00.000Z'
-  },
-  {
-    id: 'archives-azur',
-    title: 'Le quartier d’affaires ouvre ses portes',
-    excerpt:
-      'Bureaux, commerces et résidences haut de gamme : le nouveau quartier d’affaires d’AzurRP accueille ses premiers habitants et entreprises.',
-    tag: 'Ville',
-    image: 'news-lore.svg',
-    publishedAt: '2026-10-14T12:00:00.000Z'
-  }
-];
+const news = [];
 
 const server = {
   online: true,
   host: 'play.azur-rp.eu',
-  port: 25565,
-  players: { online: 42, max: 120 },
-  ping: 34,
+  port: 22459,
+  players: { online: 0, max: 20 },
+  ping: 20,
   version: '1.12.2',
-  motd: 'AzurRP — Modern RP'
+  motd: 'A Minecraft Server'
 };
 
 contextBridge.exposeInMainWorld('azur', {
@@ -110,10 +82,10 @@ contextBridge.exposeInMainWorld('azur', {
     get: async () => ({
       news,
       links: {
-        discord: 'https://discord.gg/azurrp',
-        website: 'https://azurrp.fr',
-        rules: 'https://azurrp.fr/reglement',
-        map: 'https://azurrp.fr/carte'
+        discord: 'https://discord.azur-rp.eu',
+        website: 'https://azur-rp.eu',
+        rules: 'https://azur-rp.eu/reglement',
+        map: 'https://azur-rp.eu/carte'
       },
       announcement: null,
       offline: false
