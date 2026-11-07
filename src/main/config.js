@@ -12,8 +12,8 @@ const BUILD_SERVER_HOST =
 
 const DEFAULT_API_URL = BUILD_API_URL || 'https://api.azur-rp.eu';
 const DEFAULT_SERVER_HOST = BUILD_SERVER_HOST || 'play.azur-rp.eu';
-const DEFAULT_SERVER_PORT = 25565;
-const DEFAULT_FORGE_BUILD = '14.23.5.2860';
+const DEFAULT_SERVER_PORT = 22459;
+const DEFAULT_FORGE_BUILD = '1.12.2-14.23.5.2860';
 const MINECRAFT_VERSION = '1.12.2';
 
 function defaultSettings(gameDir = '') {
