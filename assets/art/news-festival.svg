@@ -1,0 +1,136 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2=".35" y2="1">
+      <stop offset="0" stop-color="#04070d"/>
+      <stop offset=".5" stop-color="#081521"/>
+      <stop offset="1" stop-color="#0d3040"/>
+    </linearGradient>
+    <radialGradient id="haze" cx=".5" cy=".78" r=".62">
+      <stop offset="0" stop-color="#3ee2ff" stop-opacity=".22"/>
+      <stop offset=".55" stop-color="#1a8fb0" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#1a8fb0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tower" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#123a50"/>
+      <stop offset="1" stop-color="#05111a"/>
+    </linearGradient>
+    <linearGradient id="towerDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a2333"/>
+      <stop offset="1" stop-color="#030b12"/>
+    </linearGradient>
+    <linearGradient id="stage" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e2a3a"/>
+      <stop offset="1" stop-color="#02070b"/>
+    </linearGradient>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a7f3ff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#3ee2ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="beamAmber" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd08a" stop-opacity=".6"/>
+      <stop offset="1" stop-color="#ffb547" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a1b25"/>
+      <stop offset="1" stop-color="#02060a"/>
+    </linearGradient>
+    <pattern id="win" width="18" height="22" patternUnits="userSpaceOnUse">
+      <rect x="5" y="6" width="6" height="8" rx="1" fill="#a7f3ff" opacity=".55"/>
+    </pattern>
+    <pattern id="winAmber" width="24" height="26" patternUnits="userSpaceOnUse">
+      <rect x="6" y="7" width="7" height="9" rx="1" fill="#ffcf84" opacity=".5"/>
+    </pattern>
+    <filter id="glow"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="16"/></filter>
+  </defs>
+
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <rect width="640" height="360" fill="url(#haze)"/>
+
+  <g fill="#d9f9ff">
+    <circle cx="70" cy="52" r="1.6" opacity=".5"/>
+    <circle cx="180" cy="96" r="1.2" opacity=".35"/>
+    <circle cx="300" cy="44" r="1.6" opacity=".45"/>
+    <circle cx="436" cy="88" r="1.2" opacity=".35"/>
+    <circle cx="556" cy="40" r="1.5" opacity=".5"/>
+    <circle cx="604" cy="140" r="1.2" opacity=".3"/>
+  </g>
+
+  <!-- skyline -->
+  <g fill="url(#towerDark)" opacity=".9">
+    <rect x="18" y="150" width="46" height="150"/>
+    <rect x="72" y="118" width="38" height="182"/>
+    <rect x="118" y="166" width="56" height="134"/>
+    <rect x="182" y="106" width="42" height="194"/>
+    <rect x="232" y="156" width="64" height="144"/>
+    <rect x="304" y="96" width="46" height="204"/>
+    <rect x="358" y="162" width="58" height="138"/>
+    <rect x="424" y="112" width="44" height="188"/>
+    <rect x="476" y="158" width="66" height="142"/>
+    <rect x="550" y="122" width="40" height="178"/>
+    <rect x="598" y="158" width="42" height="142"/>
+  </g>
+  <g fill="url(#win)" opacity=".3" filter="url(#glow)">
+    <rect x="72" y="118" width="38" height="182"/>
+    <rect x="182" y="106" width="42" height="194"/>
+    <rect x="304" y="96" width="46" height="204"/>
+    <rect x="424" y="112" width="44" height="188"/>
+    <rect x="550" y="122" width="40" height="178"/>
+  </g>
+
+  <!-- neon signs -->
+  <g opacity=".8">
+    <rect x="88" y="228" width="6" height="60" rx="3" fill="#3ee2ff"/>
+    <rect x="326" y="204" width="6" height="74" rx="3" fill="#ffb547"/>
+    <rect x="500" y="216" width="6" height="62" rx="3" fill="#3ee2ff"/>
+  </g>
+
+  <!-- stage beams -->
+  <g filter="url(#soft)" opacity=".8">
+    <path d="M300 0h22l96 250h-40z" fill="url(#beam)"/>
+    <path d="M340 0h18l58 250h-34z" fill="url(#beamAmber)"/>
+    <path d="M262 0h16l-46 250h-30z" fill="url(#beamAmber)"/>
+  </g>
+
+  <!-- festival stage -->
+  <g>
+    <rect x="196" y="206" width="188" height="70" rx="4" fill="url(#stage)" stroke="#3ee2ff" stroke-opacity=".25"/>
+    <rect x="196" y="206" width="188" height="5" fill="#3ee2ff" opacity=".55"/>
+    <rect x="222" y="232" width="20" height="44" fill="#06131c" stroke="#3ee2ff" stroke-opacity=".2"/>
+    <rect x="338" y="232" width="20" height="44" fill="#06131c" stroke="#3ee2ff" stroke-opacity=".2"/>
+    <circle cx="290" cy="238" r="12" fill="#0a1d29" stroke="#ffb547" stroke-opacity=".5"/>
+    <circle cx="290" cy="238" r="4" fill="#ffd08a" opacity=".9"/>
+    <g fill="#3ee2ff" opacity=".7">
+      <rect x="204" y="254" width="10" height="3" rx="1.5"/>
+      <rect x="220" y="254" width="10" height="3" rx="1.5"/>
+      <rect x="350" y="254" width="10" height="3" rx="1.5"/>
+      <rect x="366" y="254" width="10" height="3" rx="1.5"/>
+    </g>
+  </g>
+
+  <!-- crowd silhouettes -->
+  <g fill="#020609">
+    <path d="M150 300c0-14 8-24 20-24s20 10 20 24v34h-40z"/>
+    <path d="M188 306c0-12 7-21 17-21s17 9 17 21v28h-34z"/>
+    <path d="M222 298c0-13 8-23 19-23s19 10 19 23v36h-38z"/>
+    <path d="M258 308c0-11 7-20 16-20s16 9 16 20v26h-32z"/>
+    <path d="M388 302c0-12 7-22 18-22s18 10 18 22v32h-36z"/>
+    <path d="M424 296c0-14 8-24 20-24s20 10 20 24v38h-40z"/>
+    <path d="M462 308c0-11 7-20 16-20s16 9 16 20v26h-32z"/>
+    <path d="M494 300c0-13 8-23 19-23s19 10 19 23v34h-38z"/>
+  </g>
+  <g fill="#020609" opacity=".9">
+    <path d="M0 320c0-16 10-28 24-28s24 12 24 28v40H0z"/>
+    <path d="M44 328c0-12 8-22 19-22s19 10 19 22v32H44z"/>
+    <path d="M548 326c0-13 8-24 20-24s20 11 20 24v34h-40z"/>
+    <path d="M584 318c0-15 9-27 23-27s23 12 23 27v42h-46z"/>
+  </g>
+
+  <rect y="300" width="640" height="60" fill="url(#ground)"/>
+  <g fill="#ffd08a" opacity=".45">
+    <rect x="40" y="312" width="22" height="3" rx="2"/>
+    <rect x="140" y="322" width="18" height="3" rx="2"/>
+    <rect x="470" y="318" width="20" height="3" rx="2"/>
+    <rect x="580" y="310" width="18" height="3" rx="2"/>
+  </g>
+</svg>

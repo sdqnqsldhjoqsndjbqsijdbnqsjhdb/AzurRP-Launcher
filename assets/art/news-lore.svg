@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2=".25" y2="1">
+      <stop offset="0" stop-color="#03060b"/>
+      <stop offset=".42" stop-color="#061220"/>
+      <stop offset="1" stop-color="#0d3346"/>
+    </linearGradient>
+    <radialGradient id="haze" cx=".6" cy=".75" r=".6">
+      <stop offset="0" stop-color="#3ee2ff" stop-opacity=".18"/>
+      <stop offset=".55" stop-color="#1a8fb0" stop-opacity=".07"/>
+      <stop offset="1" stop-color="#1a8fb0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="moon" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#eafbff" stop-opacity=".95"/>
+      <stop offset=".4" stop-color="#a8f2ff" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#a8f2ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="tower" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#123a52"/>
+      <stop offset="1" stop-color="#050f19"/>
+    </linearGradient>
+    <linearGradient id="towerDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a2130"/>
+      <stop offset="1" stop-color="#030a11"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a1b25"/>
+      <stop offset="1" stop-color="#02060a"/>
+    </linearGradient>
+    <linearGradient id="trail" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#ffb547" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#ffd08a" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#ffb547" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="trailCyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3ee2ff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#a7f3ff" stop-opacity=".75"/>
+      <stop offset="1" stop-color="#3ee2ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="reflect" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3ee2ff" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#3ee2ff" stop-opacity="0"/>
+    </linearGradient>
+    <pattern id="win" width="20" height="24" patternUnits="userSpaceOnUse">
+      <rect x="5" y="6" width="7" height="9" rx="1" fill="#a7f3ff" opacity=".55"/>
+    </pattern>
+    <pattern id="winAmber" width="24" height="28" patternUnits="userSpaceOnUse">
+      <rect x="6" y="7" width="7" height="9" rx="1" fill="#ffcf84" opacity=".5"/>
+    </pattern>
+    <filter id="glow"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+  </defs>
+
+  <rect width="640" height="360" fill="url(#sky)"/>
+  <rect width="640" height="360" fill="url(#haze)"/>
+
+  <circle cx="486" cy="80" r="86" fill="url(#moon)" opacity=".7"/>
+  <circle cx="486" cy="80" r="24" fill="#e6fbff" opacity=".85"/>
+
+  <g fill="#d9f9ff">
+    <circle cx="64" cy="54" r="1.5" opacity=".45"/>
+    <circle cx="156" cy="104" r="1.2" opacity=".3"/>
+    <circle cx="244" cy="42" r="1.5" opacity=".45"/>
+    <circle cx="338" cy="92" r="1.2" opacity=".3"/>
+    <circle cx="408" cy="38" r="1.4" opacity=".4"/>
+    <circle cx="574" cy="146" r="1.2" opacity=".35"/>
+  </g>
+
+  <!-- distant skyline -->
+  <g fill="url(#towerDark)" opacity=".92">
+    <rect x="0" y="168" width="46" height="132"/>
+    <rect x="54" y="138" width="38" height="162"/>
+    <rect x="100" y="182" width="54" height="118"/>
+    <rect x="162" y="126" width="42" height="174"/>
+    <rect x="212" y="174" width="60" height="126"/>
+    <rect x="280" y="116" width="46" height="184"/>
+    <rect x="334" y="176" width="56" height="124"/>
+    <rect x="398" y="132" width="44" height="168"/>
+    <rect x="450" y="180" width="62" height="120"/>
+    <rect x="520" y="142" width="40" height="158"/>
+    <rect x="568" y="176" width="52" height="124"/>
+    <rect x="626" y="134" width="14" height="166"/>
+  </g>
+  <g fill="url(#win)" opacity=".34" filter="url(#glow)">
+    <rect x="54" y="138" width="38" height="162"/>
+    <rect x="162" y="126" width="42" height="174"/>
+    <rect x="280" y="116" width="46" height="184"/>
+    <rect x="398" y="132" width="44" height="168"/>
+    <rect x="520" y="142" width="40" height="158"/>
+  </g>
+
+  <!-- downtown towers -->
+  <g>
+    <rect x="176" y="120" width="108" height="192" rx="7" fill="url(#tower)" stroke="#3ee2ff" stroke-opacity=".2"/>
+    <rect x="176" y="120" width="108" height="192" rx="7" fill="url(#win)" opacity=".6"/>
+    <rect x="192" y="136" width="8" height="164" fill="#3ee2ff" opacity=".16"/>
+
+    <rect x="296" y="66" width="146" height="246" rx="9" fill="url(#tower)" stroke="#3ee2ff" stroke-opacity=".25"/>
+    <rect x="296" y="66" width="146" height="246" rx="9" fill="url(#winAmber)" opacity=".42"/>
+    <rect x="312" y="82" width="10" height="218" fill="#9cf3ff" opacity=".12"/>
+    <rect x="418" y="82" width="10" height="218" fill="#3ee2ff" opacity=".12"/>
+    <rect x="344" y="66" width="50" height="8" fill="#ffb547" opacity=".55"/>
+
+    <rect x="452" y="142" width="96" height="170" rx="7" fill="url(#tower)" stroke="#3ee2ff" stroke-opacity=".16"/>
+    <rect x="452" y="142" width="96" height="170" rx="7" fill="url(#win)" opacity=".52"/>
+
+    <rect x="110" y="176" width="60" height="136" rx="6" fill="url(#towerDark)" stroke="#3ee2ff" stroke-opacity=".12"/>
+    <rect x="110" y="176" width="60" height="136" rx="6" fill="url(#win)" opacity=".4"/>
+  </g>
+  <g fill="#ffb547">
+    <circle cx="368" cy="60" r="3.4"/>
+    <circle cx="238" cy="114" r="2.6"/>
+    <circle cx="500" cy="136" r="2.6"/>
+  </g>
+
+  <!-- wet street -->
+  <rect y="304" width="640" height="56" fill="url(#ground)"/>
+  <path d="M0 304h640" stroke="#3ee2ff" stroke-opacity=".16" stroke-width="2"/>
+  <g opacity=".7">
+    <rect x="150" y="304" width="120" height="50" fill="url(#reflect)"/>
+    <rect x="320" y="304" width="150" height="54" fill="url(#reflect)"/>
+    <rect x="500" y="304" width="110" height="48" fill="url(#reflect)"/>
+  </g>
+  <g filter="url(#glow)">
+    <rect x="60" y="322" width="300" height="4" rx="2" fill="url(#trail)" opacity=".75"/>
+    <rect x="330" y="340" width="290" height="4" rx="2" fill="url(#trailCyan)" opacity=".6"/>
+  </g>
+  <g fill="#ffd08a" opacity=".45">
+    <rect x="120" y="312" width="24" height="3" rx="2"/>
+    <rect x="360" y="312" width="24" height="3" rx="2"/>
+    <rect x="540" y="312" width="24" height="3" rx="2"/>
+  </g>
+</svg>

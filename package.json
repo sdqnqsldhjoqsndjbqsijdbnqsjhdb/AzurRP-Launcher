@@ -1,0 +1,51 @@
+{
+  "name": "azur-rp-launcher",
+  "productName": "AzurRP",
+  "version": "1.0.0",
+  "description": "Launcher Minecraft 1.12.2 pour le serveur roleplay AzurRP",
+  "author": {
+    "name": "AzurRP",
+    "email": "contact@azur-rp.eu"
+  },
+  "license": "MIT",
+  "private": true,
+  "main": "dist/main.js",
+  "scripts": {
+    "icons": "node scripts/make-icons.mjs",
+    "build": "node scripts/make-icons.mjs && node scripts/build.mjs",
+    "build:dev": "node scripts/build.mjs --dev",
+    "dev": "npm run build:dev && electron .",
+    "dev:local": "node scripts/build.mjs --dev && node scripts/dev-local.mjs",
+    "start": "electron .",
+    "test": "node --test",
+    "screenshot": "npm run build:dev && electron scripts/screenshot.js",
+    "qa": "npm run build:dev && electron scripts/qa-renderer.js",
+    "e2e": "npm run build:dev && electron scripts/e2e-launcher.js",
+    "dist": "npm run build && electron-builder --publish never",
+    "dist:win": "npm run build && electron-builder --win --publish never",
+    "dist:linux": "npm run build && electron-builder --linux --publish never",
+    "dist:mac": "npm run build && electron-builder --mac --publish never",
+    "verify:dist": "node scripts/verify-dist.mjs"
+  },
+  "dependencies": {
+    "minecraft-java-core": "^4.2.9",
+    "minecraft-server-util": "^5.4.4",
+    "electron-updater": "^6.8.1"
+  },
+  "devDependencies": {
+    "@electron/asar": "^3.4.1",
+    "electron": "39.8.10",
+    "electron-builder": "^26.18.0",
+    "esbuild": "^0.28.2",
+    "javascript-obfuscator": "^5.10.0",
+    "sharp": "^0.35.5"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "allowScripts": {
+    "electron@39.8.10": true,
+    "esbuild@0.28.2": true,
+    "electron-winstaller@5.4.0": true
+  }
+}

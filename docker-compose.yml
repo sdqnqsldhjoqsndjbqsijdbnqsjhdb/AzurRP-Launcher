@@ -1,0 +1,47 @@
+services:
+  db:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-change-me-root}
+      MARIADB_DATABASE: azurrp
+      MARIADB_USER: azurrp
+      MARIADB_PASSWORD: ${DB_PASSWORD:-azurrp_dev_password}
+    volumes:
+      - azurrp-db:/var/lib/mysql
+    healthcheck:
+      test: ['CMD', 'healthcheck.sh', '--connect', '--innodb_initialized']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  api:
+    build: ./server
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: azurrp
+      DB_PASSWORD: ${DB_PASSWORD:-azurrp_dev_password}
+      DB_NAME: azurrp
+      # Génère une valeur avec : openssl rand -hex 48
+      JWT_SECRET: ${JWT_SECRET:-change-me-with-openssl-rand-hex-48-before-production}
+      TOKEN_TTL_DAYS: 30
+      AUTO_MIGRATE: 'true'
+      AUTO_SEED: 'true'
+      DISCORD_URL: ${DISCORD_URL:-https://discord.gg/azurrp}
+      WEBSITE_URL: ${WEBSITE_URL:-https://azurrp.fr}
+      RULES_URL: ${RULES_URL:-https://azurrp.fr/reglement}
+      MAP_URL: ${MAP_URL:-https://azurrp.fr/carte}
+    ports:
+      - '3000:3000'
+
+volumes:
+  azurrp-db:

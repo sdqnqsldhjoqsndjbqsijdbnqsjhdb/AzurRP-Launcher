@@ -1,0 +1,104 @@
+appId: fr.azurrp.launcher
+productName: AzurRP
+copyright: Copyright © 2026 AzurRP
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - dist/**/*
+  - assets/**/*
+  - package.json
+
+asar: true
+asarUnpack:
+  - assets/brand/icon.png
+
+# Fuses Electron : verrouille le binaire distribué. Le processus principal ne
+# peut plus être détourné (mode Node, inspecteur) et Electron refuse de charger
+# l'application depuis un dossier décompressé : seul l'ASAR signé par notre
+# manifeste d'intégrité est exécutable.
+electronFuses:
+  runAsNode: false
+  enableCookieEncryption: true
+  enableNodeOptionsEnvironmentVariable: false
+  enableNodeCliInspectArguments: false
+  enableEmbeddedAsarIntegrityValidation: false
+  onlyLoadAppFromAsar: true
+
+npmRebuild: false
+compression: maximum
+artifactName: ${productName}-${version}-${os}-${arch}.${ext}
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.png
+  requestedExecutionLevel: asInvoker
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: AzurRP
+  uninstallDisplayName: AzurRP
+  deleteAppDataOnUninstall: false
+
+linux:
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - x64
+  icon: build/icon.png
+  category: Game
+  maintainer: AzurRP <contact@azurrp.fr>
+  synopsis: Launcher Minecraft 1.12.2 du serveur roleplay AzurRP
+  description: |
+    Launcher officiel du serveur roleplay francophone AzurRP.
+    Authentification, actualités, statut du serveur et lancement de
+    Minecraft 1.12.2 avec Forge.
+
+deb:
+  depends:
+    - libgtk-3-0
+    - libnotify4
+    - libnss3
+    - libxss1
+    - libxtst6
+    - xdg-utils
+    - libatspi2.0-0
+    - libdrm2
+    - libgbm1
+
+mac:
+  target:
+    - target: dmg
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+  icon: build/icon.png
+  category: public.app-category.games
+  hardenedRuntime: true
+  gatekeeperAssess: false
+
+dmg:
+  title: AzurRP ${version}
+
+publish:
+  provider: github
+  owner: sdqnqsldhjoqsndjbqsijdbnqsjhdb
+  repo: AzurRP-Launcher
+  releaseType: release

@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>AzurRP — Azur City</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" class="svg-sprite" aria-hidden="true">
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.2v13.6c0 .8.9 1.3 1.6.9l10.7-6.8c.6-.4.6-1.4 0-1.8L9.6 4.3c-.7-.4-1.6.1-1.6.9Z" fill="currentColor"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 19v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V19M9 9.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM17 3.3a3.5 3.5 0 0 1 0 6.4M22 19v-1.5a4 4 0 0 0-3-3.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-news" viewBox="0 0 24 24"><path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Zm3 4h8M8 12h8M8 16h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="3" y="14" width="18" height="7" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M7 6.5h.01M7 17.5h.01M11 6.5h2M11 17.5h2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1A1.7 1.7 0 0 0 9 4.6 1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>
+    <symbol id="i-discord" viewBox="0 0 24 24"><path d="M18.9 5.3A17 17 0 0 0 14.7 4l-.5 1a15 15 0 0 0-4.4 0l-.5-1a17 17 0 0 0-4.2 1.3C2.5 8.8 1.8 12.2 2.1 15.6a17 17 0 0 0 5.2 2.6l1.1-1.7c-.6-.2-1.2-.5-1.8-.9l.4-.3a12 12 0 0 0 10 0l.4.3c-.6.4-1.2.7-1.8.9l1.1 1.7a17 17 0 0 0 5.2-2.6c.4-4-.8-7.4-3-10.3ZM8.7 13.8c-.9 0-1.7-.8-1.7-1.9s.8-1.9 1.7-1.9c1 0 1.7.9 1.7 1.9s-.8 1.9-1.7 1.9Zm6.6 0c-.9 0-1.7-.8-1.7-1.9s.8-1.9 1.7-1.9c1 0 1.7.9 1.7 1.9s-.8 1.9-1.7 1.9Z" fill="currentColor"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3Z" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5M15 8l4 4-4 4M19 12H9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-min" viewBox="0 0 12 12"><path d="M2 6h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>
+    <symbol id="i-max" viewBox="0 0 12 12"><rect x="2.2" y="2.2" width="7.6" height="7.6" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/></symbol>
+    <symbol id="i-restore" viewBox="0 0 12 12"><path d="M3.5 3.5V2.6c0-.3.2-.6.6-.6h5.3c.3 0 .6.3.6.6v5.3c0 .3-.3.6-.6.6h-.9M2.6 3.5h5.8c.3 0 .6.2.6.6v5.3c0 .3-.3.6-.6.6H2.6a.6.6 0 0 1-.6-.6V4.1c0-.4.3-.6.6-.6Z" fill="none" stroke="currentColor" stroke-width="1.1"/></symbol>
+    <symbol id="i-close" viewBox="0 0 12 12"><path d="M2.7 2.7l6.6 6.6M9.3 2.7 2.7 9.3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h2" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.8 12s3.4-6 9.2-6 9.2 6 9.2 6-3.4 6-9.2 6-9.2-6-9.2-6Z" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2.7" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18M10 6.2A10 10 0 0 1 12 6c5.8 0 9.2 6 9.2 6a17 17 0 0 1-3.6 4.1M6.3 7.7A17.5 17.5 0 0 0 2.8 12s3.4 6 9.2 6c1.5 0 2.8-.4 4-1M9.9 9.9a3 3 0 0 0 4.2 4.2" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H10l2 2h6.5A2.5 2.5 0 0 1 21 9.5v8a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5v-10Z" fill="none" stroke="currentColor" stroke-width="1.7"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 .4 4M20 5v6h-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m7 9 3 3-3 3M13 15h4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a5 5 0 0 0 7.1 0l2.1-2.1a5 5 0 0 0-7.1-7.1L11 5.9M14 10a5 5 0 0 0-7.1 0l-2.1 2.1a5 5 0 0 0 7.1 7.1l1.1-1.1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10" width="15" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 10V7.5a4 4 0 0 1 8 0V10" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="15" r="1.4" fill="currentColor"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M4.5 20v-1a6.5 6.5 0 0 1 6.5-6.5h2a6.5 6.5 0 0 1 6.5 6.5v1" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M12 2.8 13.8 9l6.2 1.8-6.2 1.8L12 18.8l-1.8-6.2L4 10.8 10.2 9 12 2.8ZM19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16ZM5 3l.6 1.4L7 5l-1.4.6L5 7l-.6-1.4L3 5l1.4-.6L5 3Z" fill="currentColor"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3.5 21 20H3L12 3.5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M12 9v5M12 17.1v.1" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M12 10.5V17M12 7.2v.1" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V5h6v2M6.5 7l1 13h9l1-13M10 11v5M14 11v5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2.8 20 6v6c0 5-3.4 8.2-8 9.2C7.4 20.2 4 17 4 12V6l8-3.2Z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m8.5 12 2.4 2.4 4.8-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m0 0 4.5-4.5M12 15l-4.5-4.5M4 19.5h16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-memory" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 2.8v3.2M15 2.8v3.2M9 18v3.2M15 18v3.2M2.8 9H6M2.8 15H6M18 9h3.2M18 15h3.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+    <symbol id="i-crown" viewBox="0 0 24 24"><path d="m3 7 4.5 4L12 5l4.5 6L21 7l-2 11H5L3 7Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M5 21h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+  </svg>
+
+  <header class="titlebar" id="titlebar">
+    <div class="titlebar-brand">
+      <img src="../../assets/brand/logo.svg" alt="">
+      <span class="titlebar-name">AZUR<span>RP</span></span>
+      <span class="titlebar-sep"></span>
+      <span class="titlebar-sub" id="titlebar-sub">MODERN RP</span>
+    </div>
+    <div class="titlebar-status" id="titlebar-status"><span class="status-dot"></span><span id="titlebar-status-text">Connexion au serveur…</span></div>
+    <div class="window-controls">
+      <button type="button" class="window-btn" id="win-min" aria-label="Réduire"><svg class="icon"><use href="#i-min"/></svg></button>
+      <button type="button" class="window-btn" id="win-max" aria-label="Agrandir"><svg class="icon"><use href="#i-max"/></svg></button>
+      <button type="button" class="window-btn window-close" id="win-close" aria-label="Fermer"><svg class="icon"><use href="#i-close"/></svg></button>
+    </div>
+  </header>
+
+  <div id="boot-screen" class="screen boot-screen">
+    <div class="boot-mark"><img src="../../assets/brand/logo.svg" alt=""></div>
+    <div class="boot-title">AZUR<span>RP</span></div>
+    <div class="boot-bar"><span></span></div>
+    <p id="boot-status">Initialisation de la ville…</p>
+  </div>
+
+  <section id="login-screen" class="screen login-screen hidden">
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <div class="login-copy">
+      <div class="login-eyebrow"><span></span>SAISON I · AZUR CITY</div>
+      <h1 class="login-logo">AZUR <span>CITY</span></h1>
+      <p class="login-tagline">Ta ville. Ta vie. Ton histoire.</p>
+      <p class="login-description">Un serveur roleplay contemporain où chaque emploi, chaque contrat et chaque rencontre construisent ta vie. Rejoins Azur City, choisis ton quartier et fais ta place au cœur de la ville.</p>
+      <div class="login-features">
+        <div class="feature-chip"><svg class="icon"><use href="#i-compass"/></svg><span>Vie urbaine immersive</span></div>
+        <div class="feature-chip"><svg class="icon"><use href="#i-shield"/></svg><span>Communauté modérée</span></div>
+        <div class="feature-chip"><svg class="icon"><use href="#i-sparkles"/></svg><span>Métiers &amp; économie</span></div>
+      </div>
+      <div class="login-quote">
+        <span class="quote-mark">“</span>
+        <p>À Azur City, personne ne te demande d’où tu viens. On te demande seulement ce que tu comptes construire.</p>
+        <span class="quote-source">— Le Journal d’Azur City, édition du matin</span>
+      </div>
+      <div class="login-meta">
+        <span><b>1.12.2</b> Java Edition</span>
+        <span class="dot-sep"></span>
+        <span><b>Roleplay</b> FR</span>
+        <span class="dot-sep"></span>
+        <span>Launcher v1.0</span>
+      </div>
+    </div>
+
+    <div class="login-panel-wrap">
+      <div class="login-panel">
+        <div class="panel-topline"></div>
+        <div class="panel-kicker"><span class="status-dot small"></span>ACCÈS AU SERVEUR</div>
+        <h2 id="auth-title">Bon retour, citoyen.</h2>
+        <p class="panel-subtitle" id="auth-subtitle">Connecte-toi avec ton compte AzurRP pour retrouver ta vie en ville.</p>
+
+        <div class="auth-tabs" role="tablist" aria-label="Connexion ou inscription">
+          <button type="button" class="auth-tab active" role="tab" aria-selected="true" data-auth-tab="login">Connexion</button>
+          <button type="button" class="auth-tab" role="tab" aria-selected="false" data-auth-tab="register">Créer un compte</button>
+        </div>
+
+        <form id="login-form" class="auth-form" autocomplete="on" novalidate>
+          <label class="field">
+            <span class="field-label">Pseudo ou email</span>
+            <span class="field-control">
+              <svg class="icon field-icon"><use href="#i-user"/></svg>
+              <input id="login-identifier" name="identifier" type="text" maxlength="190" autocomplete="username" placeholder="Ton pseudo AzurRP" required>
+            </span>
+          </label>
+          <label class="field">
+            <span class="field-label">Mot de passe</span>
+            <span class="field-control">
+              <svg class="icon field-icon"><use href="#i-lock"/></svg>
+              <input id="login-password" name="password" type="password" maxlength="128" autocomplete="current-password" placeholder="Ton mot de passe" required>
+              <button type="button" class="field-action" data-toggle-password="login-password" aria-label="Afficher le mot de passe"><svg class="icon"><use href="#i-eye"/></svg></button>
+            </span>
+          </label>
+          <div class="form-row">
+            <label class="checkline"><input id="remember-me" type="checkbox" checked><span class="check-box"></span><span>Se souvenir de moi</span></label>
+            <span class="form-hint">Connexion crack sécurisée</span>
+          </div>
+          <div id="login-error" class="form-error" role="alert"></div>
+          <button id="login-submit" type="submit" class="btn btn-primary btn-block btn-lg">
+            <span class="btn-label">Entrer dans la ville</span>
+            <span class="btn-spinner"></span>
+            <svg class="icon btn-arrow"><use href="#i-play"/></svg>
+          </button>
+        </form>
+
+        <form id="register-form" class="auth-form hidden" autocomplete="on" novalidate>
+          <label class="field">
+            <span class="field-label">Pseudo Minecraft</span>
+            <span class="field-control">
+              <svg class="icon field-icon"><use href="#i-user"/></svg>
+              <input id="register-username" name="username" type="text" maxlength="16" autocomplete="username" placeholder="3 à 16 caractères, sans espace" required>
+            </span>
+          </label>
+          <label class="field">
+            <span class="field-label">Email</span>
+            <span class="field-control">
+              <svg class="icon field-icon"><use href="#i-mail"/></svg>
+              <input id="register-email" name="email" type="email" maxlength="190" autocomplete="email" placeholder="toi@exemple.fr" required>
+            </span>
+          </label>
+          <div class="field-row">
+            <label class="field">
+              <span class="field-label">Mot de passe</span>
+              <span class="field-control">
+                <svg class="icon field-icon"><use href="#i-lock"/></svg>
+                <input id="register-password" name="password" type="password" maxlength="72" autocomplete="new-password" placeholder="8 caractères minimum" required>
+                <button type="button" class="field-action" data-toggle-password="register-password" aria-label="Afficher le mot de passe"><svg class="icon"><use href="#i-eye"/></svg></button>
+              </span>
+            </label>
+            <label class="field">
+              <span class="field-label">Confirmation</span>
+              <span class="field-control">
+                <svg class="icon field-icon"><use href="#i-lock"/></svg>
+                <input id="register-confirm" name="confirm" type="password" maxlength="72" autocomplete="new-password" placeholder="Répète le mot de passe" required>
+              </span>
+            </label>
+          </div>
+          <div class="password-meter" aria-hidden="true"><span id="password-meter-bar"></span></div>
+          <div id="register-error" class="form-error" role="alert"></div>
+          <button id="register-submit" type="submit" class="btn btn-primary btn-block btn-lg">
+            <span class="btn-label">Créer mon citoyen</span>
+            <span class="btn-spinner"></span>
+            <svg class="icon btn-arrow"><use href="#i-sparkles"/></svg>
+          </button>
+          <p class="legal-note">En créant un compte, tu acceptes le <button type="button" class="text-link" data-external="rules">règlement du serveur</button>.</p>
+        </form>
+
+        <div class="panel-footer">
+          <button type="button" class="panel-link" data-external="discord"><svg class="icon"><use href="#i-discord"/></svg>Rejoindre le Discord</button>
+          <span class="dot-sep"></span>
+          <button type="button" class="panel-link" data-external="website"><svg class="icon"><use href="#i-globe"/></svg>Site officiel</button>
+        </div>
+      </div>
+      <p class="login-disclaimer">AzurRP n’est pas affilié à Mojang Studios ni à Microsoft. Connexion hors-ligne sécurisée par compte serveur.</p>
+    </div>
+  </section>
+
+  <section id="main-screen" class="screen app-screen hidden">
+    <div class="app-backdrop"></div>
+
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="../../assets/brand/logo.svg" alt="">
+        <div><strong>AZUR<span>RP</span></strong><small>AZUR CITY · MODERN RP</small></div>
+      </div>
+      <div class="account-card">
+        <div class="avatar-wrap"><img id="sidebar-avatar" data-avatar alt="" src="../../assets/brand/avatar-fallback.svg"><span class="online-dot"></span></div>
+        <div class="account-meta"><strong data-username>Citoyen</strong><span data-role>Citoyen</span></div>
+        <button type="button" class="icon-btn account-menu" id="sidebar-logout" aria-label="Se déconnecter" title="Se déconnecter"><svg class="icon"><use href="#i-logout"/></svg></button>
+      </div>
+      <nav class="nav" aria-label="Navigation principale">
+        <button type="button" class="nav-item active" data-view="play"><svg class="icon"><use href="#i-compass"/></svg><span>Jouer</span><span class="nav-glow"></span></button>
+        <button type="button" class="nav-item" data-view="news"><svg class="icon"><use href="#i-news"/></svg><span>Actualités</span></button>
+        <button type="button" class="nav-item" data-view="server"><svg class="icon"><use href="#i-server"/></svg><span>Serveur</span></button>
+        <button type="button" class="nav-item" data-view="settings"><svg class="icon"><use href="#i-settings"/></svg><span>Paramètres</span></button>
+      </nav>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-server" id="sidebar-server">
+        <div class="sidebar-server-top"><span class="status-dot"></span><span>AZURRP · 1.12.2</span><button type="button" class="icon-btn tiny" id="sidebar-refresh" aria-label="Actualiser le statut"><svg class="icon"><use href="#i-refresh"/></svg></button></div>
+        <strong id="sidebar-status">Vérification…</strong>
+        <span id="sidebar-players">— joueurs</span>
+      </div>
+      <div class="sidebar-links">
+        <button type="button" class="sidebar-link" data-external="discord"><svg class="icon"><use href="#i-discord"/></svg><span>Discord</span></button>
+        <button type="button" class="sidebar-link" data-external="website"><svg class="icon"><use href="#i-globe"/></svg><span>Site</span></button>
+      </div>
+      <div class="sidebar-foot">v<span data-app-version>1.0.0</span> · <span data-platform-label>Desktop</span></div>
+    </aside>
+
+    <main class="workspace">
+      <header class="workspace-header">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-line"></span><span id="view-eyebrow">TABLEAU DE BORD</span></div>
+          <h1 id="greeting">Bonjour, <span data-username>citoyen</span>.</h1>
+        </div>
+        <div class="header-actions">
+          <button type="button" class="mini-progress hidden" id="launch-mini" aria-label="Revoir la progression">
+            <span class="mini-ring"></span>
+            <span id="launch-mini-text">Lancement…</span>
+            <span class="mini-bar"><span id="launch-mini-bar"></span></span>
+          </button>
+          <button type="button" class="btn btn-quiet" id="console-button"><svg class="icon"><use href="#i-terminal"/></svg><span>Console</span></button>
+          <button type="button" class="server-pill" id="header-server" data-view-link="server">
+            <span class="status-dot"></span>
+            <span id="header-status-text">Hors ligne</span>
+            <span class="server-pill-sep"></span>
+            <span id="header-players">0 joueur</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="view-container">
+        <section class="view active" data-view-panel="play">
+          <div class="hero-card">
+            <img class="hero-art" src="../../assets/art/hero.svg" alt="">
+            <div class="hero-shade"></div>
+            <div class="hero-content">
+              <div class="hero-chips"><span class="chip chip-live"><span class="status-dot small"></span><span id="hero-online-label">SERVEUR MODERN RP</span></span><span class="chip">1.12.2 · FORGE</span></div>
+              <h2>Azur City<br><em>t’attend.</em></h2>
+              <p>Une métropole contemporaine, des quartiers vivants, une économie qui tourne. Ici, chacun construit sa vie : un métier, un logement, des rencontres et sa réputation.</p>
+              <div class="hero-actions">
+                <button type="button" class="btn-play" id="play-button">
+                  <span class="play-icon"><svg class="icon"><use href="#i-play"/></svg></span>
+                  <span class="play-text"><strong>REJOINDRE AZUR CITY</strong><small>Lancer Minecraft 1.12.2</small></span>
+                  <span class="btn-spinner"></span>
+                </button>
+                <button type="button" class="btn btn-ghost" id="copy-ip"><svg class="icon"><use href="#i-copy"/></svg><span data-server-ip>play.azur-rp.eu</span></button>
+              </div>
+            </div>
+            <div class="hero-side">
+              <div class="hero-status-orb"><span class="orb-core"></span><span class="orb-ring"></span><span class="orb-ring delay"></span></div>
+              <div class="hero-status-copy"><strong id="hero-status">Connexion…</strong><span id="hero-players">— / — joueurs</span></div>
+            </div>
+          </div>
+
+          <div class="play-grid">
+            <article class="card server-card">
+              <div class="card-head"><div><span class="card-kicker">ÉTAT DU SERVEUR</span><h3>Azur City · Centre-ville</h3></div><button type="button" class="icon-btn" id="server-refresh" aria-label="Actualiser"><svg class="icon"><use href="#i-refresh"/></svg></button></div>
+              <div class="server-state-row">
+                <span class="status-badge" id="quick-status"><span class="status-dot"></span>Vérification</span>
+                <span class="server-version-chip" id="quick-version">1.12.2</span>
+              </div>
+              <div class="server-stats">
+                <div><svg class="icon"><use href="#i-users"/></svg><strong id="quick-players">—</strong><span>Joueurs</span></div>
+                <div><svg class="icon"><use href="#i-sparkles"/></svg><strong id="quick-ping">—</strong><span>Latence</span></div>
+              </div>
+              <p class="server-motd" id="quick-motd">Connexion au serveur Azur City…</p>
+              <div class="card-actions"><button type="button" class="text-link" data-view-link="server">Voir les détails <svg class="icon"><use href="#i-external"/></svg></button><span class="ip-mini" data-server-ip>play.azur-rp.eu</span></div>
+            </article>
+
+            <article class="card account-summary">
+              <div class="card-head"><div><span class="card-kicker">TON PERSONNAGE</span><h3 data-username>Citoyen</h3></div><span class="role-badge" data-role>Citoyen</span></div>
+              <div class="account-big">
+                <div class="avatar-large"><img id="account-avatar" data-avatar alt="" src="../../assets/brand/avatar-fallback.svg"></div>
+                <div><span class="muted">Membre depuis</span><strong id="account-created">—</strong><span class="account-email" id="account-email">—</span></div>
+              </div>
+              <div class="account-stats">
+                <div><span>Version</span><strong>1.12.2</strong></div>
+                <div><span>RAM allouée</span><strong id="memory-summary">4 Go</strong></div>
+                <div><span>Java</span><strong id="java-summary">Auto</strong></div>
+              </div>
+              <div class="card-actions"><button type="button" class="text-link" data-view-link="settings">Configurer <svg class="icon"><use href="#i-settings"/></svg></button></div>
+            </article>
+
+            <article class="card news-preview-card">
+              <div class="card-head"><div><span class="card-kicker">DERNIÈRES NOUVELLES</span><h3>La vie en ville</h3></div><button type="button" class="icon-btn" data-view-link="news" aria-label="Toutes les actualités"><svg class="icon"><use href="#i-external"/></svg></button></div>
+              <div id="news-preview" class="news-preview"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div>
+              <div class="card-actions"><button type="button" class="text-link" data-view-link="news">Toutes les actualités <svg class="icon"><use href="#i-external"/></svg></button></div>
+            </article>
+          </div>
+
+          <div class="tip-banner">
+            <svg class="icon"><use href="#i-info"/></svg>
+            <p><strong>Première connexion ?</strong> Choisis ton métier auprès de la mairie, trouve un logement et présente-toi aux habitants de ton quartier.</p>
+            <button type="button" class="text-link" data-external="rules">Lire le règlement RP <svg class="icon"><use href="#i-external"/></svg></button>
+          </div>
+        </section>
+
+        <section class="view" data-view-panel="news">
+          <div class="view-heading">
+            <div><span class="card-kicker">JOURNAL &amp; ANNONCES</span><h2>Le journal d’Azur City</h2><p>Événements, mises à jour et nouvelles de la ville.</p></div>
+            <div class="view-heading-actions"><span class="offline-badge hidden" id="news-offline-banner"><svg class="icon"><use href="#i-info"/></svg>Contenu local</span><button type="button" class="btn btn-quiet" id="news-refresh"><svg class="icon"><use href="#i-refresh"/></svg><span>Actualiser</span></button></div>
+          </div>
+          <div id="news-grid" class="news-grid"></div>
+        </section>
+
+        <section class="view" data-view-panel="server">
+          <div class="view-heading">
+            <div><span class="card-kicker">MULTIJOUEUR</span><h2>Le serveur Azur City</h2><p>Une métropole, des quartiers, mille vies à écrire ensemble.</p></div>
+            <button type="button" class="btn btn-quiet" id="server-refresh-big"><svg class="icon"><use href="#i-refresh"/></svg><span>Actualiser</span></button>
+          </div>
+          <div class="server-hero card">
+            <div class="server-hero-copy">
+              <span class="status-badge big" id="server-big-status"><span class="status-dot"></span>Vérification</span>
+              <h3>Azur City <span>· Centre-ville</span></h3>
+              <p id="server-big-motd">Récupération des informations du serveur…</p>
+              <div class="server-address"><span data-server-ip>play.azur-rp.eu</span><button type="button" class="icon-btn" id="server-copy" aria-label="Copier l’adresse"><svg class="icon"><use href="#i-copy"/></svg></button></div>
+            </div>
+            <div class="server-hero-stats">
+              <div><span>Joueurs en ligne</span><strong id="server-big-players">—</strong></div>
+              <div><span>Latence</span><strong id="server-big-ping">—</strong></div>
+              <div><span>Version</span><strong id="server-big-version">1.12.2</strong></div>
+            </div>
+          </div>
+          <div class="server-details-grid">
+            <article class="card detail-card">
+              <svg class="icon detail-icon"><use href="#i-compass"/></svg>
+              <h3>Une ville qui vit</h3>
+              <p>Métiers, entreprises, immobilier, politique et économie : la ville évolue au rythme de ses habitants et de leurs projets.</p>
+            </article>
+            <article class="card detail-card">
+              <svg class="icon detail-icon"><use href="#i-shield"/></svg>
+              <h3>Une communauté saine</h3>
+              <p>Un règlement clair, une équipe présente et des événements réguliers pour que chacun puisse trouver sa place.</p>
+            </article>
+            <article class="card detail-card">
+              <svg class="icon detail-icon"><use href="#i-sparkles"/></svg>
+              <h3>Des journées animées</h3>
+              <p>Marchés nocturnes, festivals urbains, interventions du LSPD et du EMS : Azur City ne s’arrête jamais vraiment.</p>
+            </article>
+          </div>
+          <div class="server-links card">
+            <div><span class="card-kicker">REJOINDRE LA COMMUNAUTÉ</span><h3>Tout ce qu’il te faut</h3></div>
+            <div class="server-link-actions">
+              <button type="button" class="btn btn-primary" data-external="discord"><svg class="icon"><use href="#i-discord"/></svg>Discord</button>
+              <button type="button" class="btn btn-ghost" data-external="rules"><svg class="icon"><use href="#i-shield"/></svg>Règlement</button>
+              <button type="button" class="btn btn-ghost" data-external="map"><svg class="icon"><use href="#i-globe"/></svg>Carte</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" data-view-panel="settings">
+          <div class="view-heading">
+            <div><span class="card-kicker">CONFIGURATION</span><h2>Paramètres du launcher</h2><p>Adapte AzurRP à ta machine. Les modifications sont enregistrées localement.</p></div>
+            <button type="button" class="btn btn-quiet" id="settings-reset"><svg class="icon"><use href="#i-refresh"/></svg><span>Réinitialiser</span></button>
+          </div>
+          <form id="settings-form" class="settings-grid" novalidate>
+            <article class="card settings-card">
+              <div class="settings-head"><svg class="icon"><use href="#i-memory"/></svg><div><h3>Performance</h3><p>Mémoire et fenêtre de jeu</p></div></div>
+              <label class="field">
+                <span class="field-label">RAM allouée à Minecraft <b id="ram-value">4 Go</b></span>
+                <input id="set-ram" class="range" type="range" min="1" max="16" step="1" value="4">
+                <span class="field-help" id="ram-help">Recommandé : 4 Go pour 1.12.2 avec Forge.</span>
+              </label>
+              <div class="field-row">
+                <label class="field"><span class="field-label">Largeur</span><input id="set-width" type="number" min="640" max="7680" step="1"></label>
+                <label class="field"><span class="field-label">Hauteur</span><input id="set-height" type="number" min="480" max="4320" step="1"></label>
+              </div>
+              <label class="checkline"><input id="set-fullscreen" type="checkbox"><span class="check-box"></span><span>Démarrer en plein écran</span></label>
+            </article>
+
+            <article class="card settings-card">
+              <div class="settings-head"><svg class="icon"><use href="#i-server"/></svg><div><h3>Serveur &amp; connexion</h3><p>Adresse et options de lancement</p></div></div>
+              <div id="founder-server-settings" class="hidden">
+                <div class="field-row">
+                  <label class="field grow"><span class="field-label">Adresse du serveur</span><input id="set-server-host" type="text" maxlength="253" placeholder="play.azur-rp.eu"></label>
+                  <label class="field port"><span class="field-label">Port</span><input id="set-server-port" type="number" min="1" max="65535"></label>
+                </div>
+                <label class="checkline"><input id="set-autoconnect" type="checkbox"><span class="check-box"></span><span>Rejoindre automatiquement le serveur au lancement</span></label>
+              </div>
+              <div id="founder-forge-settings" class="hidden">
+                <label class="checkline"><input id="set-forge" type="checkbox"><span class="check-box"></span><span>Installer / utiliser Forge 1.12.2</span></label>
+                <label class="field"><span class="field-label">Version de Forge</span><input id="set-forge-build" type="text" maxlength="32" placeholder="14.23.5.2860"><span class="field-help">Laisse la valeur par défaut sauf si le serveur impose une version précise.</span></label>
+              </div>
+              <p id="forge-required-note" class="field-help">Forge 1.12.2 est requis par le serveur et reste activé pour les joueurs.</p>
+            </article>
+
+            <article class="card settings-card">
+              <div class="settings-head"><svg class="icon"><use href="#i-folder"/></svg><div><h3>Fichiers &amp; Java</h3><p>Dossier de jeu et runtime</p></div></div>
+              <label class="field"><span class="field-label">Dossier Minecraft</span><span class="input-with-button"><input id="set-game-dir" type="text" placeholder="Dossier par défaut"><button type="button" class="btn btn-small btn-ghost" id="game-browse"><svg class="icon"><use href="#i-folder"/></svg>Parcourir</button></span></label>
+              <div class="inline-actions"><button type="button" class="text-link" id="game-open"><svg class="icon"><use href="#i-external"/></svg>Ouvrir le dossier</button><span class="field-help" id="game-dir-help"></span></div>
+              <label class="field"><span class="field-label">Chemin Java 8 (optionnel)</span><span class="input-with-button"><input id="set-java-path" type="text" placeholder="Détection automatique"><button type="button" class="btn btn-small btn-ghost" id="java-browse"><svg class="icon"><use href="#i-folder"/></svg></button></span></label>
+              <div class="inline-actions"><button type="button" class="text-link" id="java-detect"><svg class="icon"><use href="#i-refresh"/></svg>Détecter Java 8</button><span class="field-help" id="java-detected"></span></div>
+              <p class="field-help">Si aucun Java 8 n’est trouvé, le launcher télécharge automatiquement un runtime compatible.</p>
+            </article>
+
+            <article class="card settings-card">
+              <div class="settings-head"><svg class="icon"><use href="#i-settings"/></svg><div><h3>Launcher &amp; API</h3><p>Comportement et serveur d’authentification</p></div></div>
+              <div id="founder-api-settings" class="hidden">
+                <label class="field"><span class="field-label">URL de l’API AzurRP</span><span class="input-with-button"><input id="set-api-url" type="url" maxlength="500" placeholder="https://api.azur-rp.eu"><button type="button" class="btn btn-small btn-ghost" id="api-test">Tester</button></span><span class="field-help" id="api-test-result">L’API gère les comptes et les actualités.</span></label>
+              </div>
+              <label class="checkline"><input id="set-minimize" type="checkbox"><span class="check-box"></span><span>Réduire le launcher quand Minecraft démarre</span></label>
+              <label class="checkline"><input id="set-remember" type="checkbox"><span class="check-box"></span><span>Mémoriser la session sur cet appareil</span></label>
+              <div class="settings-footer">
+                <span class="save-state" id="save-state"></span>
+                <button type="submit" class="btn btn-primary" id="settings-save"><svg class="icon"><use href="#i-check"/></svg>Enregistrer</button>
+              </div>
+            </article>
+          </form>
+          <div class="settings-meta">
+            <span>AzurRP Launcher v<span data-app-version>1.0.0</span></span>
+            <button type="button" class="text-link" id="open-logs"><svg class="icon"><use href="#i-terminal"/></svg>Ouvrir les logs</button>
+            <span id="system-summary"></span>
+          </div>
+        </section>
+      </div>
+    </main>
+  </section>
+
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <aside id="console-drawer" class="console-drawer" aria-hidden="true">
+    <div class="console-head">
+      <div><svg class="icon"><use href="#i-terminal"/></svg><strong>Console Minecraft</strong><span id="console-status">En attente</span></div>
+      <div class="console-actions">
+        <button type="button" class="icon-btn" id="console-copy" aria-label="Copier les logs"><svg class="icon"><use href="#i-copy"/></svg></button>
+        <button type="button" class="icon-btn" id="console-clear" aria-label="Vider"><svg class="icon"><use href="#i-trash"/></svg></button>
+        <button type="button" class="icon-btn" id="console-close" aria-label="Fermer"><svg class="icon"><use href="#i-close"/></svg></button>
+      </div>
+    </div>
+    <pre id="console-lines" class="console-lines"></pre>
+  </aside>
+
+  <div id="launch-overlay" class="launch-overlay hidden">
+    <div class="launch-modal" id="launch-modal">
+      <div class="launch-visual">
+        <div class="portal"><span></span><span></span><span></span></div>
+        <div class="launch-mark"><img src="../../assets/brand/logo.svg" alt=""></div>
+      </div>
+      <div class="launch-body">
+        <span class="launch-kicker" id="launch-kicker">PRÉPARATION DE LA VILLE</span>
+        <h2 id="launch-title">Initialisation de la ville…</h2>
+        <p id="launch-detail">Vérification des fichiers Minecraft.</p>
+        <div class="launch-progress"><span id="launch-bar"></span></div>
+        <div class="launch-meta"><span id="launch-percent">0 %</span><span id="launch-speed"></span></div>
+        <div class="launch-actions">
+          <button type="button" class="btn btn-quiet" id="launch-console"><svg class="icon"><use href="#i-terminal"/></svg>Console</button>
+          <button type="button" class="btn btn-ghost" id="launch-hide">Masquer</button>
+          <button type="button" class="btn btn-primary hidden" id="launch-close">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
