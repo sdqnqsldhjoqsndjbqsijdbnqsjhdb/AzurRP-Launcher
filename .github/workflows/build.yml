@@ -18,7 +18,6 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm install --package-lock-only
       - run: npm ci
       - run: npm test
 
@@ -50,7 +49,6 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm install --package-lock-only
       - run: npm ci
       - run: npm run build && npx electron-builder ${{ matrix.target }} --publish never
       - run: npm run verify:dist
