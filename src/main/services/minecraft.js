@@ -1,8 +1,9 @@
-'use strict';
+﻿'use strict';
 
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
+const { inspect } = require('node:util');
 const { Launch } = require('minecraft-java-core');
 const { offlineUuid } = require('../utils/offlineUuid');
 const { MINECRAFT_VERSION } = require('../config');
@@ -31,19 +32,21 @@ function errorMessage(error) {
 }
 
 class MinecraftManager {
-  constructor({ settingsStore, logger, getUser, emit, defaultGameDir, getApiBase }) {
+  constructor({ settingsStore, logger, getUser, emit, defaultGameDir, getApiBase, resolveJavaImpl = resolveJava }) {
     this.settingsStore = settingsStore;
     this.logger = logger;
     this.getUser = getUser;
     this.emit = emit;
     this.defaultGameDir = defaultGameDir;
     this.getApiBase = getApiBase;
+    this.resolveJava = resolveJavaImpl;
     this.launcher = null;
     this.finalized = true;
     this.logStream = null;
     this.logQueue = [];
     this.logTimer = null;
     this.lastProgressAt = 0;
+    this.launchStage = 'initialisation';
     this.state = {
       status: 'idle',
       startedAt: null,
@@ -59,7 +62,7 @@ class MinecraftManager {
   resolveGameDir(settings = this.settingsStore.get()) {
     const directory = settings.gameDir || this.defaultGameDir;
     if (!path.isAbsolute(directory)) {
-      const error = new Error('Le dossier de jeu doit être un chemin absolu.');
+      const error = new Error('Le dossier de jeu doit Ãªtre un chemin absolu.');
       error.code = 'GAME_DIR_INVALID';
       throw error;
     }
@@ -136,7 +139,7 @@ class MinecraftManager {
       try {
         this.logStream.end();
       } catch {
-        // Ignoré.
+        // IgnorÃ©.
       }
       this.logStream = null;
     }
@@ -144,7 +147,7 @@ class MinecraftManager {
 
   async launch() {
     if (!this.finalized || ['preparing', 'downloading', 'running'].includes(this.state.status)) {
-      const error = new Error('Minecraft est déjà en cours de lancement.');
+      const error = new Error('Minecraft est dÃ©jÃ  en cours de lancement.');
       error.code = 'GAME_ALREADY_RUNNING';
       throw error;
     }
@@ -168,10 +171,11 @@ class MinecraftManager {
       version: MINECRAFT_VERSION
     };
     this.emit({ type: 'state', state: this.getState() });
-    this.emit({ type: 'phase', phase: 'preparing', message: 'Préparation du lancement…' });
+    this.emit({ type: 'phase', phase: 'preparing', message: 'PrÃ©paration du lancementâ€¦' });
 
     let javaPath = null;
     try {
+      this.launchStage = 'synchronisation des mods';
       if (settings.useForge && this.getApiBase) {
         await syncMods({
           apiUrl: this.getApiBase(),
@@ -180,7 +184,8 @@ class MinecraftManager {
           logger: this.logger
         });
       }
-      javaPath = await resolveJava({ customPath: settings.javaPath, gameDir });
+      this.launchStage = 'dÃ©tection de Java';
+      javaPath = await this.resolveJava({ customPath: settings.javaPath, gameDir, emit: this.emit, autoInstall: true });
     } catch (error) {
       this.finalized = true;
       this.state = { ...this.state, status: 'idle', lastError: error.message };
@@ -188,15 +193,10 @@ class MinecraftManager {
       throw error;
     }
 
-    if (!javaPath) {
-      this.emit({
-        type: 'phase',
-        phase: 'java',
-        message: 'Java 8 absent : téléchargement automatique d’un runtime compatible…'
-      });
-    }
+    
 
     this.logStream = this.logger.createGameLog();
+    this.launchStage = 'tÃ©lÃ©chargement et prÃ©paration de Minecraft/Forge';
     this.logger.info(`Lancement de Minecraft ${MINECRAFT_VERSION} (Forge: ${settings.useForge ? settings.forgeBuild : 'non'}).`);
 
     const gameArgs = [];
@@ -232,8 +232,15 @@ class MinecraftManager {
       loader: {
         enable: settings.useForge,
         type: settings.useForge ? 'forge' : null,
-        build: settings.forgeBuild,
-        path: path.join(gameDir, 'loader')
+        // minecraft-java-core indexes Forge builds by their full Maven version
+        // (for example "1.12.2-14.23.5.2860"), while launcher settings keep
+        // only the Forge build number for the UI.
+        build: settings.forgeBuild === 'latest' || settings.forgeBuild === 'recommended'
+          ? settings.forgeBuild
+          : settings.forgeBuild.startsWith(`${MINECRAFT_VERSION}-`)
+            ? settings.forgeBuild
+            : `${MINECRAFT_VERSION}-${settings.forgeBuild}`,
+        path: 'loader'
       },
       GAME_ARGS: gameArgs
     };
@@ -243,6 +250,7 @@ class MinecraftManager {
 
     launcher.on('progress', (downloaded, total, element) => {
       if (this.finalized) return;
+      this.launchStage = 'tÃ©lÃ©chargement des fichiers Minecraft';
       const size = Number(total) || 0;
       const current = Number(downloaded) || 0;
       const percent = size > 0 ? Math.max(0, Math.min(99.5, (current / size) * 100)) : null;
@@ -263,6 +271,7 @@ class MinecraftManager {
 
     launcher.on('check', (downloaded, total, element) => {
       if (this.finalized) return;
+      this.launchStage = 'vÃ©rification des fichiers Minecraft';
       const size = Number(total) || 0;
       const percent = size > 0 ? Math.min(99.5, (Number(downloaded) / size) * 100) : null;
       this.emit({ type: 'progress', phase: 'verify', percent, detail: element ? String(element) : '' });
@@ -278,19 +287,22 @@ class MinecraftManager {
 
     launcher.on('extract', (element) => {
       if (this.finalized) return;
+      this.launchStage = 'extraction des fichiers';
       this.emit({ type: 'phase', phase: 'extract', message: `Extraction : ${cleanLine(element)}` });
     });
 
     launcher.on('patch', (message) => {
       if (this.finalized) return;
+      this.launchStage = 'installation de Forge';
       this.emit({ type: 'phase', phase: 'loader', message: cleanLine(message) });
     });
 
     launcher.on('data', (chunk) => {
       if (this.finalized) return;
+      this.launchStage = 'dÃ©marrage du processus Java';
       if (this.state.status !== 'running') {
         this.setState({ status: 'running', startedAt: Date.now() });
-        this.emit({ type: 'phase', phase: 'running', message: 'Minecraft est lancé. Bon jeu !' });
+        this.emit({ type: 'phase', phase: 'running', message: 'Minecraft est lancÃ©. Bon jeu !' });
         this.emit({ type: 'spawned' });
       }
       this.queueLog(chunk);
@@ -298,11 +310,14 @@ class MinecraftManager {
 
     launcher.on('error', (error) => {
       if (this.finalized) {
-        this.queueLog(`Erreur après lancement : ${errorMessage(error)}`);
+        this.queueLog(`Erreur aprÃ¨s lancement : ${errorMessage(error)}`);
         return;
       }
       const message = errorMessage(error);
-      this.logger.error(`Erreur Minecraft: ${message}`);
+      const details = this.redact(inspect(error, { depth: 5, showHidden: true, breakLength: 120 }));
+      const diagnostic = `Ã‰chec pendant Â« ${this.launchStage} Â» : ${message}\nDÃ©tail reÃ§u : ${details}`;
+      this.logger.error(`Erreur Minecraft: ${diagnostic}`);
+      if (this.logStream) this.logStream.write(`[Launcher] ${diagnostic}\n`);
       this.finalized = true;
       this.closeLogStream();
       this.setState({ status: 'idle', startedAt: null, lastError: message });
@@ -315,7 +330,7 @@ class MinecraftManager {
       this.finalized = true;
       this.closeLogStream();
       this.setState({ status: 'idle', startedAt: null });
-      this.logger.info(`Minecraft fermé (code ${code}).`);
+      this.logger.info(`Minecraft fermÃ© (code ${code}).`);
       this.emit({ type: 'closed', code: Number(code) || 0 });
     });
 
@@ -324,7 +339,10 @@ class MinecraftManager {
     } catch (error) {
       if (this.finalized) return;
       const message = errorMessage(error);
-      this.logger.error(`Impossible de lancer Minecraft: ${message}`);
+      const details = this.redact(inspect(error, { depth: 5, showHidden: true, breakLength: 120 }));
+      const diagnostic = `Ã‰chec pendant Â« ${this.launchStage} Â» : ${message}\nDÃ©tail reÃ§u : ${details}`;
+      this.logger.error(`Impossible de lancer Minecraft: ${diagnostic}`);
+      if (this.logStream) this.logStream.write(`[Launcher] ${diagnostic}\n`);
       this.finalized = true;
       this.closeLogStream();
       this.setState({ status: 'idle', startedAt: null, lastError: message });

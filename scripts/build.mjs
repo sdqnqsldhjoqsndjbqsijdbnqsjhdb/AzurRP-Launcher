@@ -8,6 +8,8 @@ const root = path.resolve(import.meta.dirname, '..');
 const dist = path.join(root, 'dist');
 const dev = process.argv.includes('--dev') || process.env.AZURRP_DEV === '1';
 
+await import('./patch-minecraft-core.mjs');
+
 // Valeurs injectées à la compilation : elles permettent de livrer un launcher
 // préconfiguré (URL d'API, adresse du serveur) sans embarquer de fichier .env.
 // Exemple : AZURRP_API_URL=https://api.azur-rp.eu npm run dist:win

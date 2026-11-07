@@ -67,6 +67,7 @@ function makeManager(overrides = {}) {
     logger,
     defaultGameDir: gameDir,
     getUser: () => ({ username: 'Aventurier' }),
+    resolveJavaImpl: async () => 'java-test',
     emit: (event) => events.push(event)
   });
   return { manager, events, gameDir, logger };
@@ -94,7 +95,8 @@ test('launch transmet les options attendues à minecraft-java-core', async () =>
   assert.equal(lastOptions.authenticator.name, 'Aventurier');
   assert.deepEqual(lastOptions.loader.enable, true);
   assert.equal(lastOptions.loader.type, 'forge');
-  assert.equal(lastOptions.loader.build, '14.23.5.2860');
+  assert.equal(lastOptions.loader.build, '1.12.2-14.23.5.2860');
+  assert.equal(lastOptions.loader.path, 'loader');
   assert.deepEqual(lastOptions.GAME_ARGS, [
     '--server',
     'play.azur-rp.eu',
