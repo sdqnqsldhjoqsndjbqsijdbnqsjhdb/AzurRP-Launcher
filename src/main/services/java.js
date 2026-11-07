@@ -5,8 +5,8 @@ const fsp = require('node:fs/promises');
 const os = require('node:os');
 const path = require('node:path');
 const { execFile } = require('node:child_process');
-const https = require('node:https');
-const zlib = require('node:zlib');
+const { Readable, Transform } = require('node:stream');
+const { pipeline } = require('node:stream/promises');
 
 const EXECUTABLE = process.platform === 'win32' ? 'java.exe' : 'java';
 const cache = new Map();
@@ -51,28 +51,50 @@ function parseVersion(output) {
 }
 
 async function downloadFile(url, dest, onProgress) {
-  return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(dest);
-    https.get(url, (response) => {
-      if (response.statusCode >= 300 && response.statusCode < 400 && response.headers.location) {
-        downloadFile(response.headers.location, dest, onProgress).then(resolve).catch(reject);
-        return;
-      }
-      if (response.statusCode !== 200) {
-        reject(new Error('HTTP ' + response.statusCode));
-        return;
-      }
-      const total = parseInt(response.headers['content-length'], 10) || 0;
-      let downloaded = 0;
-      response.on('data', (chunk) => {
-        downloaded += chunk.length;
-        if (onProgress && total) onProgress(downloaded, total);
-      });
-      response.pipe(file);
-      file.on('finish', () => file.close(() => resolve()));
-      file.on('error', (err) => { fs.unlink(dest, () => {}); reject(err); });
-    }).on('error', reject);
+  const response = await fetch(url, {
+    redirect: 'follow',
+    signal: AbortSignal.timeout(10 * 60 * 1000)
   });
+  if (!response.ok) {
+    await response.body?.cancel().catch(() => {});
+    throw new Error(`Téléchargement Java refusé (HTTP ${response.status}).`);
+  }
+  if (!response.body) throw new Error('Le serveur Java a renvoyé une réponse vide.');
+
+  const total = Number(response.headers.get('content-length')) || 0;
+  let downloaded = 0;
+  const progress = new Transform({
+    transform(chunk, _encoding, callback) {
+      downloaded += chunk.length;
+      if (onProgress && total) onProgress(downloaded, total);
+      callback(null, chunk);
+    }
+  });
+  try {
+    await pipeline(
+      Readable.fromWeb(response.body),
+      progress,
+      fs.createWriteStream(dest)
+    );
+  } catch (error) {
+    await fsp.rm(dest, { force: true }).catch(() => {});
+    throw new Error(`Téléchargement de Java interrompu après ${downloaded} octets : ${error.message}`);
+  }
+
+  const signature = Buffer.alloc(4);
+  const handle = await fsp.open(dest, 'r');
+  try {
+    await handle.read(signature, 0, signature.length, 0);
+  } finally {
+    await handle.close();
+  }
+  const validArchive = process.platform === 'win32'
+    ? signature[0] === 0x50 && signature[1] === 0x4b
+    : signature[0] === 0x1f && signature[1] === 0x8b;
+  if (!validArchive) {
+    await fsp.rm(dest, { force: true });
+    throw new Error('Le téléchargement Temurin n’est pas une archive valide (ZIP/TAR.GZ attendu).');
+  }
 }
 
 async function extractArchive(archivePath, destDir) {
@@ -99,18 +121,49 @@ async function extractArchive(archivePath, destDir) {
   }
 }
 
+async function findRuntimeJavaPaths(root, maxDepth = 6) {
+  const found = [];
+  const visited = new Set();
+
+  async function walk(directory, depth) {
+    if (depth > maxDepth || visited.has(directory)) return;
+    visited.add(directory);
+
+    for (const relative of [
+      path.join('bin', EXECUTABLE),
+      path.join('Contents', 'Home', 'bin', EXECUTABLE)
+    ]) {
+      const candidate = path.join(directory, relative);
+      try {
+        const stat = await fsp.lstat(candidate);
+        if (stat.isFile() && !stat.isSymbolicLink()) found.push(candidate);
+      } catch {}
+    }
+
+    let entries;
+    try {
+      entries = await fsp.readdir(directory, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      if (!entry.isDirectory() || entry.isSymbolicLink()) continue;
+      await walk(path.join(directory, entry.name), depth + 1);
+    }
+  }
+
+  await walk(root, 0);
+  return [...new Set(found)];
+}
+
 async function ensureJava8(gameDir, emit) {
   const runtimeDir = path.join(gameDir, 'runtime', 'temurin-8');
-  const javaBin = path.join(runtimeDir, 'bin', EXECUTABLE);
 
-  // Vérifie si déjà installé
-  try {
-    const stat = await fsp.stat(javaBin);
-    if (stat.isFile()) {
-      const info = await inspect(javaBin);
-      if (info && info.major === 8) return javaBin;
-    }
-  } catch {}
+  // Les archives Temurin peuvent contenir un ou plusieurs dossiers racine.
+  for (const javaBin of await findRuntimeJavaPaths(runtimeDir)) {
+    const info = await inspect(javaBin);
+    if (info?.major === 8) return javaBin;
+  }
 
   // Télécharge et installe
   const url = TEMURIN_8_URLS[process.platform];
@@ -136,13 +189,22 @@ async function ensureJava8(gameDir, emit) {
   try { await fsp.rmdir(tempDir); } catch {}
 
   // Vérifie l'installation
-  const info = await inspect(javaBin);
-  if (!info || info.major !== 8) {
-    throw new Error('Échec de l\'installation de Java 8 (version détectée: ' + (info?.major || 'inconnue') + ')');
+  let installedJava = null;
+  let info = null;
+  for (const javaBin of await findRuntimeJavaPaths(runtimeDir)) {
+    const candidate = await inspect(javaBin);
+    if (candidate?.major === 8) {
+      installedJava = javaBin;
+      info = candidate;
+      break;
+    }
+  }
+  if (!installedJava || !info) {
+    throw new Error(`Échec de l'installation de Java 8 : aucun exécutable Java 8 valide trouvé dans ${runtimeDir}.`);
   }
 
   if (emit) emit({ type: 'phase', phase: 'java-ready', message: 'Java 8 prêt (' + info.version + ')' });
-  return javaBin;
+  return installedJava;
 }
 
 async function inspect(file) {
@@ -246,14 +308,7 @@ async function scanLinux(list, seen) {
 async function scanGameRuntime(gameDir, list, seen) {
   if (!gameDir) return;
   const runtime = path.join(gameDir, 'runtime');
-  addPath(list, seen, path.join(runtime, 'bin', EXECUTABLE));
-  for (const versionDir of await listDirectories(runtime)) {
-    addPath(list, seen, path.join(versionDir, 'bin', EXECUTABLE));
-    for (const directory of await listDirectories(versionDir)) {
-      addPath(list, seen, path.join(directory, 'bin', EXECUTABLE));
-      addPath(list, seen, path.join(directory, 'Contents', 'Home', 'bin', EXECUTABLE));
-    }
-  }
+  for (const candidate of await findRuntimeJavaPaths(runtime)) addPath(list, seen, candidate);
 }
 
 async function pathJava(list, seen) {

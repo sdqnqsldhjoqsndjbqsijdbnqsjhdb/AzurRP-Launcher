@@ -54,7 +54,7 @@ const news = [
     id: 'archives-azur',
     title: 'Le quartier d’affaires ouvre ses portes',
     excerpt:
-      'Bureaux, commerces et résidences haut de gamme : le nouveau quartier d’affaires d’Azur City accueille ses premiers habitants et entreprises.',
+      'Bureaux, commerces et résidences haut de gamme : le nouveau quartier d’affaires d’AzurRP accueille ses premiers habitants et entreprises.',
     tag: 'Ville',
     image: 'news-lore.svg',
     publishedAt: '2026-10-14T12:00:00.000Z'
@@ -68,7 +68,7 @@ const server = {
   players: { online: 42, max: 120 },
   ping: 34,
   version: '1.12.2',
-  motd: 'Azur City — Modern RP · Saison I'
+  motd: 'AzurRP — Modern RP'
 };
 
 contextBridge.exposeInMainWorld('azur', {

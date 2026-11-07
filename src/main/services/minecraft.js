@@ -187,6 +187,8 @@ class MinecraftManager {
       this.launchStage = 'dÃ©tection de Java';
       javaPath = await this.resolveJava({ customPath: settings.javaPath, gameDir, emit: this.emit, autoInstall: true });
     } catch (error) {
+      const details = this.redact(inspect(error, { depth: 5, showHidden: true, breakLength: 120 }));
+      this.logger.error(`Échec pendant « ${this.launchStage} » : ${errorMessage(error)}\nDétail reçu : ${details}`);
       this.finalized = true;
       this.state = { ...this.state, status: 'idle', lastError: error.message };
       this.emit({ type: 'state', state: this.getState() });

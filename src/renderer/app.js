@@ -212,7 +212,7 @@ function switchAuthTab(mode) {
   $('#register-form')?.classList.toggle('hidden', !isRegister);
   const title = $('#auth-title');
   const subtitle = $('#auth-subtitle');
-  if (title) title.textContent = isRegister ? 'Rejoins Azur City.' : 'Bon retour, citoyen.';
+  if (title) title.textContent = isRegister ? 'Rejoins AzurRP.' : 'Bon retour, citoyen.';
   if (subtitle) {
     subtitle.textContent = isRegister
       ? 'Un pseudo, un email, un mot de passe : ta vie en ville commence ici.'
@@ -329,7 +329,7 @@ async function handleRegister(event) {
     $$('#register-form input').forEach((input) => { input.value = ''; });
     updatePasswordMeter('');
     await enterApp(result.session);
-    toast('Ton compte est créé. Bienvenue à Azur City.', { type: 'success', title: 'Compte créé' });
+    toast('Ton compte est créé. Bienvenue à AzurRP.', { type: 'success', title: 'Compte créé' });
   } catch (error) {
     setFormError('register', error.message || 'Inscription impossible.');
   } finally {
@@ -537,7 +537,7 @@ function renderServerStatus() {
   setText('#quick-version', status?.version || '1.12.2');
   setText('#quick-players', players ? String(players.online) : '—');
   setText('#quick-ping', status?.ping != null ? `${status.ping} ms` : '—');
-  setText('#quick-motd', status?.motd || (online === false ? 'Le serveur ne répond pas pour le moment.' : 'Connexion au serveur Azur City…'));
+  setText('#quick-motd', status?.motd || (online === false ? 'Le serveur ne répond pas pour le moment.' : 'Connexion au serveur AzurRP…'));
 
   const big = $('#server-big-status');
   if (big) {
@@ -941,9 +941,9 @@ function setLaunchPhase(phase, message) {
     verify: ['VÉRIFICATION', 'Contrôle des fichiers…'],
     extract: ['EXTRACTION', 'Installation des ressources…'],
     loader: ['FORGE', 'Installation du chargeur de mods…'],
-    running: ['VILLE PRÊTE', 'Bienvenue à Azur City.'],
-    success: ['VILLE PRÊTE', 'Bienvenue à Azur City.'],
-    error: ['ÉCHEC DU LANCEMENT', 'Azur City n’a pas pu démarrer.'],
+    running: ['VILLE PRÊTE', 'Bienvenue à AzurRP.'],
+    success: ['VILLE PRÊTE', 'Bienvenue à AzurRP.'],
+    error: ['ÉCHEC DU LANCEMENT', 'AzurRP n’a pas pu démarrer.'],
     closed: ['SESSION TERMINÉE', 'À bientôt en ville.']
   };
   const [kickerText, titleText] = labels[phase] || ['LANCEMENT', 'Préparation…'];

@@ -14,6 +14,7 @@ const MAX_MOD_BYTES = 256 * 1024 * 1024;
 const MAX_TOTAL_MOD_BYTES = 1024 * 1024 * 1024;
 const MAX_ENTRIES = 10000;
 const MAX_MODS = 512;
+const MAX_DOWNLOAD_ATTEMPTS = 3;
 const MANIFEST = '.azurrp-managed.json';
 
 function getModsUrl(apiUrl) {
@@ -48,7 +49,9 @@ function openZip(zipPath) {
 async function extractJarEntries(zipPath, destination) {
   const zip = await openZip(zipPath);
   const jars = [];
+  const dynamxFiles = [];
   const seen = new Set();
+  const seenDynamx = new Set();
   let entries = 0;
   let totalBytes = 0;
 
@@ -69,7 +72,7 @@ async function extractJarEntries(zipPath, destination) {
         reject(new Error('mods.zip ne contient aucun fichier .jar.'));
         return;
       }
-      resolve(jars);
+      resolve({ jars, dynamxFiles });
     });
 
     zip.on('entry', (entry) => {
@@ -97,9 +100,43 @@ async function extractJarEntries(zipPath, destination) {
         return;
       }
 
-      const normalized = segments[0]?.toLowerCase() === 'mods' ? segments.slice(1) : segments;
+      const isDynamx = segments[0]?.toLowerCase() === 'dynamx';
+      const normalized = ['mods', 'dynamx'].includes(segments[0]?.toLowerCase())
+        ? segments.slice(1)
+        : segments;
       if (!normalized.length || normalized.some((part) => part === '.' || part === '..')) {
         return fail(new Error(`Chemin invalide dans mods.zip : ${rawName.slice(0, 120)}`));
+      }
+      if (isDynamx) {
+        const relativePath = normalized.join('/');
+        const key = relativePath.toLowerCase();
+        const unixMode = (entry.externalFileAttributes >>> 16) & 0xffff;
+        if ((unixMode & 0xf000) === 0xa000) {
+          return fail(new Error(`Lien symbolique interdit dans mods.zip : ${relativePath}`));
+        }
+        if (normalized.some((part) => /[<>:"|?*\u0000-\u001f]/.test(part)) || seenDynamx.has(key)) {
+          return fail(new Error(`Chemin invalide ou dupliqué dans le dossier DynamX : ${relativePath}`));
+        }
+        if (entry.uncompressedSize > MAX_MOD_BYTES) {
+          return fail(new Error(`Le fichier DynamX ${relativePath} dépasse la taille autorisée.`));
+        }
+        totalBytes += entry.uncompressedSize;
+        if (totalBytes > MAX_TOTAL_MOD_BYTES) {
+          return fail(new Error('Le pack mods.zip dépasse les limites autorisées.'));
+        }
+        seenDynamx.add(key);
+        const target = path.join(destination, 'DynamX', ...normalized);
+        fsp.mkdir(path.dirname(target), { recursive: true })
+          .then(() => {
+            zip.openReadStream(entry, (streamError, input) => {
+              if (streamError) return fail(streamError);
+              pipeline(input, fs.createWriteStream(target, { flags: 'wx' })).then(() => {
+                dynamxFiles.push(relativePath);
+                zip.readEntry();
+              }, fail);
+            });
+          }, fail);
+        return;
       }
       if (!normalized.at(-1).toLowerCase().endsWith('.jar')) {
         zip.readEntry();
@@ -143,7 +180,7 @@ async function extractJarEntries(zipPath, destination) {
   });
 }
 
-async function downloadArchive(url, archivePath, etag) {
+async function downloadArchive(url, archivePath, etag, logger = null, attempt = 1) {
   const headers = { Accept: 'application/zip, application/octet-stream' };
   if (etag) headers['If-None-Match'] = etag;
 
@@ -156,7 +193,17 @@ async function downloadArchive(url, archivePath, etag) {
     });
   } catch (error) {
     if (error.name === 'AbortError' || error.name === 'TimeoutError') {
-      throw new Error('Le téléchargement de mods.zip a dépassé le délai autorisé.');
+      if (attempt < MAX_DOWNLOAD_ATTEMPTS) {
+        logger?.warn(`Délai dépassé pendant le téléchargement de mods.zip; nouvelle tentative ${attempt + 1}/${MAX_DOWNLOAD_ATTEMPTS}.`);
+        await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+        return downloadArchive(url, archivePath, null, logger, attempt + 1);
+      }
+      throw new Error(`Le téléchargement de mods.zip a dépassé le délai autorisé après ${MAX_DOWNLOAD_ATTEMPTS} tentatives.`);
+    }
+    if (attempt < MAX_DOWNLOAD_ATTEMPTS) {
+      logger?.warn(`Connexion impossible pendant le téléchargement de mods.zip (${error.message}); nouvelle tentative ${attempt + 1}/${MAX_DOWNLOAD_ATTEMPTS}.`);
+      await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+      return downloadArchive(url, archivePath, null, logger, attempt + 1);
     }
     throw new Error(`Impossible de télécharger mods.zip depuis l’API : ${error.message}`);
   }
@@ -184,7 +231,21 @@ async function downloadArchive(url, archivePath, etag) {
       callback(null, chunk);
     }
   });
-  await pipeline(Readable.fromWeb(response.body), limiter, fs.createWriteStream(archivePath, { flags: 'wx' }));
+  try {
+    await pipeline(Readable.fromWeb(response.body), limiter, fs.createWriteStream(archivePath, { flags: 'wx' }));
+  } catch (error) {
+    await fsp.rm(archivePath, { force: true }).catch(() => {});
+    if (received <= MAX_ARCHIVE_BYTES && attempt < MAX_DOWNLOAD_ATTEMPTS) {
+      logger?.warn(`Téléchargement de mods.zip interrompu après ${received} octets${size ? ` sur ${size}` : ''} (${error.message}); nouvelle tentative ${attempt + 1}/${MAX_DOWNLOAD_ATTEMPTS}.`);
+      await new Promise((resolve) => setTimeout(resolve, 1000 * attempt));
+      return downloadArchive(url, archivePath, null, logger, attempt + 1);
+    }
+    if (received > MAX_ARCHIVE_BYTES) {
+      throw new Error('mods.zip dépasse la taille maximale autorisée (512 Mio).');
+    }
+    const reason = error?.message || 'connexion interrompue';
+    throw new Error(`Le téléchargement de mods.zip a été interrompu après ${received} octets${size ? ` sur ${size}` : ''} (${reason}) après ${attempt} tentative(s). Vérifie l’archive ou la connexion entre l’API et le launcher.`);
+  }
 
   if (received < 4) throw new Error('Le fichier mods.zip est trop petit ou invalide.');
   const header = Buffer.alloc(4);
@@ -253,8 +314,13 @@ async function syncMods({ apiUrl, gameDir, emit = () => {}, logger = null }) {
 
   try {
     emit({ type: 'phase', phase: 'download', message: 'Vérification et téléchargement des mods du serveur…' });
-    const download = await downloadArchive(url, archivePath, previous?.etag || null);
-    if (download.unchanged && await manifestMatches(modsDir, previous)) {
+    const download = await downloadArchive(url, archivePath, previous?.etag || null, logger);
+    let dynamxReady = false;
+    try {
+      const dynamxStat = await fsp.lstat(path.join(gameDir, 'DynamX'));
+      dynamxReady = dynamxStat.isDirectory() && !dynamxStat.isSymbolicLink();
+    } catch {}
+    if (download.unchanged && dynamxReady && await manifestMatches(modsDir, previous)) {
       logger?.info('Mods déjà à jour.');
       emit({ type: 'phase', phase: 'preparing', message: 'Mods déjà à jour.' });
       return { unchanged: true, count: previous.files.length };
@@ -262,9 +328,9 @@ async function syncMods({ apiUrl, gameDir, emit = () => {}, logger = null }) {
 
     if (download.unchanged) {
       await fsp.rm(archivePath, { force: true });
-      await downloadArchive(url, archivePath, null);
+      await downloadArchive(url, archivePath, null, logger);
     }
-    const jars = await extractJarEntries(archivePath, extractDir);
+    const { jars, dynamxFiles } = await extractJarEntries(archivePath, extractDir);
     const nextFiles = jars.map((jar) => jar.filename);
     const nextSet = new Set(nextFiles.map((file) => file.toLowerCase()));
     const hashes = {};
@@ -285,6 +351,21 @@ async function syncMods({ apiUrl, gameDir, emit = () => {}, logger = null }) {
       await fsp.rename(temporary, target);
     }
 
+    if (dynamxFiles.length) {
+      const dynamxDir = path.join(gameDir, 'DynamX');
+      await fsp.mkdir(dynamxDir, { recursive: true });
+      const dynamxStat = await fsp.lstat(dynamxDir);
+      if (!dynamxStat.isDirectory() || dynamxStat.isSymbolicLink()) {
+        throw new Error('Le chemin .minecraft/DynamX doit être un dossier normal, pas un lien symbolique.');
+      }
+      for (const relativePath of dynamxFiles) {
+        const source = path.join(extractDir, 'DynamX', ...relativePath.split('/'));
+        const target = path.join(dynamxDir, ...relativePath.split('/'));
+        await fsp.mkdir(path.dirname(target), { recursive: true });
+        await fsp.copyFile(source, target);
+      }
+    }
+
     const manifest = {
       version: 1,
       etag: download.etag,
@@ -297,9 +378,9 @@ async function syncMods({ apiUrl, gameDir, emit = () => {}, logger = null }) {
     await fsp.rm(path.join(modsDir, MANIFEST), { force: true });
     await fsp.rename(manifestTemp, path.join(modsDir, MANIFEST));
 
-    logger?.info(`${jars.length} mod(s) synchronisé(s) depuis ${url.origin}.`);
-    emit({ type: 'phase', phase: 'preparing', message: `${jars.length} mod(s) prêt(s).` });
-    return { unchanged: false, count: jars.length };
+    logger?.info(`${jars.length} mod(s) et ${dynamxFiles.length} fichier(s) DynamX synchronisé(s) depuis ${url.origin}.`);
+    emit({ type: 'phase', phase: 'preparing', message: `${jars.length} mod(s) et les données DynamX sont prêts.` });
+    return { unchanged: false, count: jars.length, dynamxCount: dynamxFiles.length };
   } finally {
     await fsp.rm(stage, { recursive: true, force: true });
   }

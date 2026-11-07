@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark">
-  <title>AzurRP — Azur City</title>
+  <title>AzurRP</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -71,10 +71,9 @@
     <div class="ambient ambient-a"></div>
     <div class="ambient ambient-b"></div>
     <div class="login-copy">
-      <div class="login-eyebrow"><span></span>SAISON I · AZUR CITY</div>
-      <h1 class="login-logo">AZUR <span>CITY</span></h1>
+      <h1 class="login-logo">AZUR <span>RP</span></h1>
       <p class="login-tagline">Ta ville. Ta vie. Ton histoire.</p>
-      <p class="login-description">Un serveur roleplay contemporain où chaque emploi, chaque contrat et chaque rencontre construisent ta vie. Rejoins Azur City, choisis ton quartier et fais ta place au cœur de la ville.</p>
+      <p class="login-description">Un serveur roleplay contemporain où chaque emploi, chaque contrat et chaque rencontre construisent ta vie. Rejoins AzurRP, choisis ton quartier et fais ta place au cœur de la ville.</p>
       <div class="login-features">
         <div class="feature-chip"><svg class="icon"><use href="#i-compass"/></svg><span>Vie urbaine immersive</span></div>
         <div class="feature-chip"><svg class="icon"><use href="#i-shield"/></svg><span>Communauté modérée</span></div>
@@ -82,8 +81,8 @@
       </div>
       <div class="login-quote">
         <span class="quote-mark">“</span>
-        <p>À Azur City, personne ne te demande d’où tu viens. On te demande seulement ce que tu comptes construire.</p>
-        <span class="quote-source">— Le Journal d’Azur City, édition du matin</span>
+        <p>À AzurRP, personne ne te demande d’où tu viens. On te demande seulement ce que tu comptes construire.</p>
+        <span class="quote-source">— Le Journal d’AzurRP, édition du matin</span>
       </div>
       <div class="login-meta">
         <span><b>1.12.2</b> Java Edition</span>
@@ -111,14 +110,14 @@
             <span class="field-label">Pseudo ou email</span>
             <span class="field-control">
               <svg class="icon field-icon"><use href="#i-user"/></svg>
-              <input id="login-identifier" name="identifier" type="text" maxlength="190" autocomplete="username" placeholder="Ton pseudo AzurRP" required>
+              <input id="login-identifier" name="identifier" type="text" maxlength="190" autocomplete="username" placeholder="Pseudo" required>
             </span>
           </label>
           <label class="field">
             <span class="field-label">Mot de passe</span>
             <span class="field-control">
               <svg class="icon field-icon"><use href="#i-lock"/></svg>
-              <input id="login-password" name="password" type="password" maxlength="128" autocomplete="current-password" placeholder="Ton mot de passe" required>
+              <input id="login-password" name="password" type="password" maxlength="128" autocomplete="current-password" placeholder="Mot de passe" required>
               <button type="button" class="field-action" data-toggle-password="login-password" aria-label="Afficher le mot de passe"><svg class="icon"><use href="#i-eye"/></svg></button>
             </span>
           </label>
@@ -192,7 +191,7 @@
     <aside class="sidebar">
       <div class="sidebar-brand">
         <img src="../../assets/brand/logo.svg" alt="">
-        <div><strong>AZUR<span>RP</span></strong><small>AZUR CITY · MODERN RP</small></div>
+        <div><strong>AZUR<span>RP</span></strong><small>AzurRP · MODERN RP</small></div>
       </div>
       <div class="account-card">
         <div class="avatar-wrap"><img id="sidebar-avatar" data-avatar alt="" src="../../assets/brand/avatar-fallback.svg"><span class="online-dot"></span></div>
@@ -247,12 +246,12 @@
             <div class="hero-shade"></div>
             <div class="hero-content">
               <div class="hero-chips"><span class="chip chip-live"><span class="status-dot small"></span><span id="hero-online-label">SERVEUR MODERN RP</span></span><span class="chip">1.12.2 · FORGE</span></div>
-              <h2>Azur City<br><em>t’attend.</em></h2>
+              <h2>AzurRP<br><em>t’attend.</em></h2>
               <p>Une métropole contemporaine, des quartiers vivants, une économie qui tourne. Ici, chacun construit sa vie : un métier, un logement, des rencontres et sa réputation.</p>
               <div class="hero-actions">
                 <button type="button" class="btn-play" id="play-button">
                   <span class="play-icon"><svg class="icon"><use href="#i-play"/></svg></span>
-                  <span class="play-text"><strong>REJOINDRE AZUR CITY</strong><small>Lancer Minecraft 1.12.2</small></span>
+                  <span class="play-text"><strong>REJOINDRE AzurRP</strong><small>Lancer Minecraft 1.12.2</small></span>
                   <span class="btn-spinner"></span>
                 </button>
                 <button type="button" class="btn btn-ghost" id="copy-ip"><svg class="icon"><use href="#i-copy"/></svg><span data-server-ip>play.azur-rp.eu</span></button>
@@ -266,7 +265,7 @@
 
           <div class="play-grid">
             <article class="card server-card">
-              <div class="card-head"><div><span class="card-kicker">ÉTAT DU SERVEUR</span><h3>Azur City · Centre-ville</h3></div><button type="button" class="icon-btn" id="server-refresh" aria-label="Actualiser"><svg class="icon"><use href="#i-refresh"/></svg></button></div>
+              <div class="card-head"><div><span class="card-kicker">ÉTAT DU SERVEUR</span><h3>AzurRP · Centre-ville</h3></div><button type="button" class="icon-btn" id="server-refresh" aria-label="Actualiser"><svg class="icon"><use href="#i-refresh"/></svg></button></div>
               <div class="server-state-row">
                 <span class="status-badge" id="quick-status"><span class="status-dot"></span>Vérification</span>
                 <span class="server-version-chip" id="quick-version">1.12.2</span>
@@ -275,7 +274,7 @@
                 <div><svg class="icon"><use href="#i-users"/></svg><strong id="quick-players">—</strong><span>Joueurs</span></div>
                 <div><svg class="icon"><use href="#i-sparkles"/></svg><strong id="quick-ping">—</strong><span>Latence</span></div>
               </div>
-              <p class="server-motd" id="quick-motd">Connexion au serveur Azur City…</p>
+              <p class="server-motd" id="quick-motd">Connexion au serveur AzurRP…</p>
               <div class="card-actions"><button type="button" class="text-link" data-view-link="server">Voir les détails <svg class="icon"><use href="#i-external"/></svg></button><span class="ip-mini" data-server-ip>play.azur-rp.eu</span></div>
             </article>
 
@@ -309,7 +308,7 @@
 
         <section class="view" data-view-panel="news">
           <div class="view-heading">
-            <div><span class="card-kicker">JOURNAL &amp; ANNONCES</span><h2>Le journal d’Azur City</h2><p>Événements, mises à jour et nouvelles de la ville.</p></div>
+            <div><span class="card-kicker">JOURNAL &amp; ANNONCES</span><h2>Le journal d’AzurRP</h2><p>Événements, mises à jour et nouvelles de la ville.</p></div>
             <div class="view-heading-actions"><span class="offline-badge hidden" id="news-offline-banner"><svg class="icon"><use href="#i-info"/></svg>Contenu local</span><button type="button" class="btn btn-quiet" id="news-refresh"><svg class="icon"><use href="#i-refresh"/></svg><span>Actualiser</span></button></div>
           </div>
           <div id="news-grid" class="news-grid"></div>
@@ -317,13 +316,13 @@
 
         <section class="view" data-view-panel="server">
           <div class="view-heading">
-            <div><span class="card-kicker">MULTIJOUEUR</span><h2>Le serveur Azur City</h2><p>Une métropole, des quartiers, mille vies à écrire ensemble.</p></div>
+            <div><span class="card-kicker">MULTIJOUEUR</span><h2>Le serveur AzurRP</h2><p>Une métropole, des quartiers, mille vies à écrire ensemble.</p></div>
             <button type="button" class="btn btn-quiet" id="server-refresh-big"><svg class="icon"><use href="#i-refresh"/></svg><span>Actualiser</span></button>
           </div>
           <div class="server-hero card">
             <div class="server-hero-copy">
               <span class="status-badge big" id="server-big-status"><span class="status-dot"></span>Vérification</span>
-              <h3>Azur City <span>· Centre-ville</span></h3>
+              <h3>AzurRP <span>· Centre-ville</span></h3>
               <p id="server-big-motd">Récupération des informations du serveur…</p>
               <div class="server-address"><span data-server-ip>play.azur-rp.eu</span><button type="button" class="icon-btn" id="server-copy" aria-label="Copier l’adresse"><svg class="icon"><use href="#i-copy"/></svg></button></div>
             </div>
@@ -347,7 +346,7 @@
             <article class="card detail-card">
               <svg class="icon detail-icon"><use href="#i-sparkles"/></svg>
               <h3>Des journées animées</h3>
-              <p>Marchés nocturnes, festivals urbains, interventions du LSPD et du EMS : Azur City ne s’arrête jamais vraiment.</p>
+              <p>Marchés nocturnes, festivals urbains, interventions du LSPD et du EMS : AzurRP ne s’arrête jamais vraiment.</p>
             </article>
           </div>
           <div class="server-links card">

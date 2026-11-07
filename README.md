@@ -1,6 +1,6 @@
 # AzurRP — Launcher Minecraft 1.12.2
 
-Launcher officiel du serveur roleplay contemporain **AzurRP — Azur City**.
+Launcher officiel du serveur roleplay contemporain **AzurRP**.
 Interface Modern RP, connexion par pseudo/email, actualités intégrées, statut du
 serveur en direct et lancement de Minecraft 1.12.2 avec Forge.
 
@@ -35,7 +35,7 @@ serveur en direct et lancement de Minecraft 1.12.2 avec Forge.
 - **Console intégrée** avec coloration des erreurs et export des logs.
 - **Paramètres complets** : RAM, résolution, Forge, dossier de jeu, Java,
   URL de l'API, connexion automatique.
-- **Fenêtre sans cadre** thémée Modern RP (Azur City), icônes et illustrations
+- **Fenêtre sans cadre** thémée Modern RP (AzurRP), icônes et illustrations
   SVG maison.
 - **Multiplateforme** : Windows 10/11 (NSIS), Linux (AppImage + deb),
   macOS (dmg + zip, Intel et Apple Silicon).

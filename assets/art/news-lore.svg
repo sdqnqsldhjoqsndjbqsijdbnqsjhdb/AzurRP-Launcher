@@ -1,31 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" preserveAspectRatio="xMidYMid slice">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2=".25" y2="1">
-      <stop offset="0" stop-color="#03060b"/>
-      <stop offset=".42" stop-color="#061220"/>
-      <stop offset="1" stop-color="#0d3346"/>
+      <stop offset="0" stop-color="#0e0700"/>
+      <stop offset=".42" stop-color="#261400"/>
+      <stop offset="1" stop-color="#532c00"/>
     </linearGradient>
     <radialGradient id="haze" cx=".6" cy=".75" r=".6">
-      <stop offset="0" stop-color="#3ee2ff" stop-opacity=".18"/>
-      <stop offset=".55" stop-color="#1a8fb0" stop-opacity=".07"/>
-      <stop offset="1" stop-color="#1a8fb0" stop-opacity="0"/>
+      <stop offset="0" stop-color="#ffa53e" stop-opacity=".18"/>
+      <stop offset=".55" stop-color="#ca6c00" stop-opacity=".07"/>
+      <stop offset="1" stop-color="#ca6c00" stop-opacity="0"/>
     </radialGradient>
     <radialGradient id="moon" cx=".5" cy=".5" r=".5">
-      <stop offset="0" stop-color="#eafbff" stop-opacity=".95"/>
-      <stop offset=".4" stop-color="#a8f2ff" stop-opacity=".4"/>
-      <stop offset="1" stop-color="#a8f2ff" stop-opacity="0"/>
+      <stop offset="0" stop-color="#fff5ea" stop-opacity=".95"/>
+      <stop offset=".4" stop-color="#ffd6a8" stop-opacity=".4"/>
+      <stop offset="1" stop-color="#ffd6a8" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="tower" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#123a52"/>
-      <stop offset="1" stop-color="#050f19"/>
+      <stop offset="0" stop-color="#643500"/>
+      <stop offset="1" stop-color="#1e1000"/>
     </linearGradient>
     <linearGradient id="towerDark" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#0a2130"/>
-      <stop offset="1" stop-color="#030a11"/>
+      <stop offset="0" stop-color="#3a1f00"/>
+      <stop offset="1" stop-color="#140b00"/>
     </linearGradient>
     <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#0a1b25"/>
-      <stop offset="1" stop-color="#02060a"/>
+      <stop offset="0" stop-color="#2f1900"/>
+      <stop offset="1" stop-color="#0c0600"/>
     </linearGradient>
     <linearGradient id="trail" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#ffb547" stop-opacity="0"/>
@@ -33,16 +33,16 @@
       <stop offset="1" stop-color="#ffb547" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="trailCyan" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#3ee2ff" stop-opacity="0"/>
-      <stop offset=".5" stop-color="#a7f3ff" stop-opacity=".75"/>
-      <stop offset="1" stop-color="#3ee2ff" stop-opacity="0"/>
+      <stop offset="0" stop-color="#ffa53e" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#ffd6a7" stop-opacity=".75"/>
+      <stop offset="1" stop-color="#ffa53e" stop-opacity="0"/>
     </linearGradient>
     <linearGradient id="reflect" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#3ee2ff" stop-opacity=".16"/>
-      <stop offset="1" stop-color="#3ee2ff" stop-opacity="0"/>
+      <stop offset="0" stop-color="#ffa53e" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#ffa53e" stop-opacity="0"/>
     </linearGradient>
     <pattern id="win" width="20" height="24" patternUnits="userSpaceOnUse">
-      <rect x="5" y="6" width="7" height="9" rx="1" fill="#a7f3ff" opacity=".55"/>
+      <rect x="5" y="6" width="7" height="9" rx="1" fill="#ffd6a7" opacity=".55"/>
     </pattern>
     <pattern id="winAmber" width="24" height="28" patternUnits="userSpaceOnUse">
       <rect x="6" y="7" width="7" height="9" rx="1" fill="#ffcf84" opacity=".5"/>
@@ -55,9 +55,9 @@
   <rect width="640" height="360" fill="url(#haze)"/>
 
   <circle cx="486" cy="80" r="86" fill="url(#moon)" opacity=".7"/>
-  <circle cx="486" cy="80" r="24" fill="#e6fbff" opacity=".85"/>
+  <circle cx="486" cy="80" r="24" fill="#fff3e6" opacity=".85"/>
 
-  <g fill="#d9f9ff">
+  <g fill="#ffedd9">
     <circle cx="64" cy="54" r="1.5" opacity=".45"/>
     <circle cx="156" cy="104" r="1.2" opacity=".3"/>
     <circle cx="244" cy="42" r="1.5" opacity=".45"/>
@@ -91,20 +91,20 @@
 
   <!-- downtown towers -->
   <g>
-    <rect x="176" y="120" width="108" height="192" rx="7" fill="url(#tower)" stroke="#3ee2ff" stroke-opacity=".2"/>
+    <rect x="176" y="120" width="108" height="192" rx="7" fill="url(#tower)" stroke="#ffa53e" stroke-opacity=".2"/>
     <rect x="176" y="120" width="108" height="192" rx="7" fill="url(#win)" opacity=".6"/>
-    <rect x="192" y="136" width="8" height="164" fill="#3ee2ff" opacity=".16"/>
+    <rect x="192" y="136" width="8" height="164" fill="#ffa53e" opacity=".16"/>
 
-    <rect x="296" y="66" width="146" height="246" rx="9" fill="url(#tower)" stroke="#3ee2ff" stroke-opacity=".25"/>
+    <rect x="296" y="66" width="146" height="246" rx="9" fill="url(#tower)" stroke="#ffa53e" stroke-opacity=".25"/>
     <rect x="296" y="66" width="146" height="246" rx="9" fill="url(#winAmber)" opacity=".42"/>
-    <rect x="312" y="82" width="10" height="218" fill="#9cf3ff" opacity=".12"/>
-    <rect x="418" y="82" width="10" height="218" fill="#3ee2ff" opacity=".12"/>
+    <rect x="312" y="82" width="10" height="218" fill="#ffd19c" opacity=".12"/>
+    <rect x="418" y="82" width="10" height="218" fill="#ffa53e" opacity=".12"/>
     <rect x="344" y="66" width="50" height="8" fill="#ffb547" opacity=".55"/>
 
-    <rect x="452" y="142" width="96" height="170" rx="7" fill="url(#tower)" stroke="#3ee2ff" stroke-opacity=".16"/>
+    <rect x="452" y="142" width="96" height="170" rx="7" fill="url(#tower)" stroke="#ffa53e" stroke-opacity=".16"/>
     <rect x="452" y="142" width="96" height="170" rx="7" fill="url(#win)" opacity=".52"/>
 
-    <rect x="110" y="176" width="60" height="136" rx="6" fill="url(#towerDark)" stroke="#3ee2ff" stroke-opacity=".12"/>
+    <rect x="110" y="176" width="60" height="136" rx="6" fill="url(#towerDark)" stroke="#ffa53e" stroke-opacity=".12"/>
     <rect x="110" y="176" width="60" height="136" rx="6" fill="url(#win)" opacity=".4"/>
   </g>
   <g fill="#ffb547">
@@ -115,7 +115,7 @@
 
   <!-- wet street -->
   <rect y="304" width="640" height="56" fill="url(#ground)"/>
-  <path d="M0 304h640" stroke="#3ee2ff" stroke-opacity=".16" stroke-width="2"/>
+  <path d="M0 304h640" stroke="#ffa53e" stroke-opacity=".16" stroke-width="2"/>
   <g opacity=".7">
     <rect x="150" y="304" width="120" height="50" fill="url(#reflect)"/>
     <rect x="320" y="304" width="150" height="54" fill="url(#reflect)"/>

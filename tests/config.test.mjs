@@ -27,7 +27,7 @@ test('les paramètres par défaut ciblent le serveur AzurRP', () => {
   const settings = defaultSettings();
   assert.equal(settings.serverHost, DEFAULT_SERVER_HOST);
   assert.equal(settings.serverHost, 'play.azur-rp.eu');
-  assert.equal(settings.serverPort, 25565);
+  assert.equal(settings.serverPort, 22459);
   assert.equal(settings.memoryMaxMb, 4096);
 });
 
@@ -62,7 +62,7 @@ test('validateSettings rejette les adresses serveur invalides', () => {
 test('validateSettings valide la résolution et la version de Forge', () => {
   const settings = validateSettings({
     resolution: { width: 100, height: 99999, fullscreen: true },
-    forgeBuild: '14.23.5.2860'
+    forgeBuild: '1.12.2-14.23.5.2860'
   });
   assert.equal(settings.resolution.width, 640);
   assert.equal(settings.resolution.height, 4320);
@@ -74,7 +74,7 @@ test('validateSettings valide la résolution et la version de Forge', () => {
 test('désactiver Forge restaure la version par défaut', () => {
   const settings = validateSettings({ useForge: false, forgeBuild: '14.23.5.2859' });
   assert.equal(settings.useForge, false);
-  assert.equal(settings.forgeBuild, '14.23.5.2860');
+  assert.equal(settings.forgeBuild, '1.12.2-14.23.5.2860');
 });
 
 test('validateSettings refuse un objet non structuré', () => {
